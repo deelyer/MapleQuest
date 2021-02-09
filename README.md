@@ -11,3 +11,15 @@ Users will be able to experience the world of *Aurora*, and begin their hero adv
 From there, heroes will be able to explore new areas, battle a variety of monsters, and collect powerful weapons
 that will help you continue your journey. 
 
+## User Stories
+
+In MapleQuest, users can expect the following features:
+
+- As a user, I want to be able to view my hero's current inventory and status
+- As a user, I want to be able to select between different weapons from my inventory
+- As a user, I want to be able to heal my hero from a vendor
+- As a user, I want to purchase new weapons from a vendor
+- As a user, I want to upgrade weapons from my inventory
+- As a user, I want to be able dismantle weapons from my inventory
+- As a user, I want to have different weapon types (i.e. elements)
+- As a user, I want to battle different monsters
