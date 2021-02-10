@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Represents a hero having a name, health points, experience, level, and weapons
+@SuppressWarnings("checkstyle:RightCurly")
 public class Hero {
 
     private static final int INITIAL_HERO_HEALTH = 10;
@@ -27,12 +28,39 @@ public class Hero {
         this.weapons = new ArrayList<>();
     }
 
+    // getters
+    public int getHealth() {
+        return health;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    // setters
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+
     public void heroStatus() {
         System.out.println(this.name + " has the following status:");
         System.out.println("Health: " + this.health);
         System.out.println("Experience: " + this.experience);
         System.out.println("Level: " + this.level);
         System.out.println("Gold: " + this.gold);
+    }
+
+    public int heroMaxHealth() {
+        return INITIAL_HERO_HEALTH * getLevel();
     }
 
     // REQUIRES: amount > 0
