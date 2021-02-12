@@ -4,10 +4,10 @@ package model;
 public class Monster {
 
     private static final int INITIAL_MONSTER_HEALTH = 10;
-    private static final int INITIAL_MONSTER_EXPERIENCE = 100;
+    private static final int INITIAL_MONSTER_EXPERIENCE = 500;
     private static final int INITIAL_MONSTER_LEVEL = 1;
     private static final int INITIAL_MONSTER_GOLD = 100;
-    private static final int INITIAL_MONSTER_DAMAGE = 1;
+    private static final int INITIAL_MONSTER_DAMAGE = 2;
 
     private String name;               // the monster's name
     private int health;                // the monster's health
@@ -53,6 +53,14 @@ public class Monster {
     // setters
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void damageToMonster(int damage) {
+        this.health -= damage;
+    }
+
+    public boolean monsterDeath() {
+        return this.health <= 0;
     }
 }
 

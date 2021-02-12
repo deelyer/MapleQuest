@@ -9,7 +9,9 @@ public class Hero {
     private static final int INITIAL_HERO_HEALTH = 10;
     private static final int INITIAL_HERO_EXPERIENCE = 0;
     private static final int INITIAL_HERO_LEVEL = 1;
-    private static final int INITIAL_HERO_GOLD = 1000;
+    private static final int INITIAL_HERO_GOLD = 100;
+    private static final Weapon INITIAL_HERO_WEAPON = new Weapon("Sword");
+    private static final int LEVEL_UP_EXP_REQUIRED = 1000;
 
     private String name;            // the hero's name
     private int health;             // the hero's health points
@@ -25,6 +27,7 @@ public class Hero {
         this.level = INITIAL_HERO_LEVEL;
         this.gold = INITIAL_HERO_GOLD;
         this.weapons = new ArrayList<>();
+        this.weapons.add(INITIAL_HERO_WEAPON);
     }
 
     // getters
@@ -57,8 +60,8 @@ public class Hero {
         this.health = health;
     }
 
-    public void setGold(int gold) {
-        this.gold = gold;
+    public void heroGoldCostAmount(int gold) {
+        this.gold -= gold;
     }
 
     // EFFECTS: gets the hero's maximum health
@@ -71,6 +74,37 @@ public class Hero {
     // EFFECTS: heals the hero by the specified amount
     public void heroHeal(int amount) {
         this.health += amount;
+    }
+
+    public void damageToHero(int damage) {
+        this.health -= damage;
+    }
+
+    public boolean heroDeath() {
+        return this.health <= 0;
+    }
+
+    public void heroGainGold(int amount) {
+        this.gold += amount;
+    }
+
+    public void heroGainExperience(int experience) {
+        this.experience += experience;
+    }
+
+    public boolean heroLevelUpPossible() {
+        return (this.experience >= LEVEL_UP_EXP_REQUIRED);
+    }
+
+    // need to fix!
+    public String heroLevelUp() {
+        while (this.experience >= LEVEL_UP_EXP_REQUIRED) {
+            this.level++;
+            this.experience = this.experience - LEVEL_UP_EXP_REQUIRED;
+            setHealth(heroMaxHealth());
+            return ("You have leveled up! Your current level is: " + this.level);
+        }
+        return null;
     }
 
     // MODIFIES: this
@@ -91,7 +125,4 @@ public class Hero {
         return weapons.get(slot - 1);
     }
 
-    public int weaponIndexAtSlotNumber(int slot) {
-        return weapons.indexOf(slot - 1);
-    }
 }

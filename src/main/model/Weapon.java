@@ -20,10 +20,10 @@ public class Weapon {
         this.weaponTier = INITIAL_WEAPON_TIER;
         this.weaponDamage = INITIAL_WEAPON_DAMAGE;
         Random random = new Random();
-        int choice = random.nextInt(8);
-        if (choice < 3) {
+        int choice = random.nextInt(100);
+        if (choice < 33) {
             this.weaponType = "Fire";
-        } else if (choice < 6) {
+        } else if (choice < 67) {
             this.weaponType = "Grass";
         } else {
             this.weaponType = "Water";

@@ -5,7 +5,6 @@ import model.Monster;
 import model.Weapon;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +14,8 @@ public class MapleQuest {
     private static final int HEAL_COST = 50;
     private static final int FORGE_COST = 50;
     private static final int UPGRADE_COST = 50;
+    private static final int REST_HEAL_AMOUNT = 5;
+    private static final int WOUNDED_HERO_HEALTH = 10;
 
     private Hero hero;
     private List<Monster> monsters;
@@ -62,6 +63,8 @@ public class MapleQuest {
             visitTownNurse();
         } else if (command.equals("w")) {
             visitWeaponSmith();
+        } else if (command.equals("e")) {
+            exploreTheWoods();
         } else if (command.equals("i")) {
             displayWeapons();
         } else {
@@ -99,13 +102,13 @@ public class MapleQuest {
             selection = selection.toLowerCase();
         }
         if (selection.equals("h")) {
-            visitTownNurseDialogue();
+            visitTownNurseHealDialogue();
         } else {
             System.out.println("See you later!");
         }
     }
 
-    private void visitTownNurseDialogue() {
+    private void visitTownNurseHealDialogue() {
         String selection = "";
         System.out.println("That will cost " + HEAL_COST + " gold, is that okay?");
         while (!(selection.equals("y") || selection.equals("n"))) {
@@ -116,8 +119,7 @@ public class MapleQuest {
         }
         if (selection.equals("y")) {
             if (hero.getGold() >= HEAL_COST) {
-                int newGoldBalance = hero.getGold() - HEAL_COST;
-                hero.setGold(newGoldBalance);
+                hero.heroGoldCostAmount(HEAL_COST);
                 hero.setHealth(hero.heroMaxHealth());
                 System.out.println("You are now completely healed! Thanks for coming!");
             } else {
@@ -152,6 +154,7 @@ public class MapleQuest {
         System.out.println("That will cost ya " + FORGE_COST + " gold, is that alright?");
         String selection = "";
         while (!(selection.equals("y") || selection.equals("n"))) {
+            System.out.println("That will cost ya " + FORGE_COST + " gold, is that alright?");
             System.out.println("\ty -> Yes");
             System.out.println("\tn -> No");
             selection = input.next();
@@ -167,8 +170,7 @@ public class MapleQuest {
     public void visitWeaponSmithForgeWeaponDialogueAgreed() {
         if (hero.getGold() >= FORGE_COST) {
             if (hero.getWeapons().size() < 3) {
-                int newGoldBalance = hero.getGold() - FORGE_COST;
-                hero.setGold(newGoldBalance);
+                hero.heroGoldCostAmount(FORGE_COST);
                 System.out.println("Very well, please give a name to your new weapon.");
                 String weaponName = input.next();
                 hero.addWeapon(weaponName);
@@ -204,23 +206,6 @@ public class MapleQuest {
             visitWeaponSmithForgeWeaponOverCarrying();
         }
     }
-//        while (!(select == 1 || select == 2 || select == 3)) {
-//            try {
-//                select = input.nextInt();
-//                System.out.println("Please type the slot number you wish to remove (i.e. 1).");
-//                displayWeapons();
-//            } catch (InputMismatchException ex) {
-//                System.out.println("Incorrect input, please enter a slot value.");
-//            }
-//        }
-//        if (select == 1) {
-//            visitWeaponSmithRemoveWeaponSelectOptions(select);
-//        } else if (select == 2) {
-//            visitWeaponSmithRemoveWeaponSelectOptions(select);
-//        } else {
-//            visitWeaponSmithRemoveWeaponSelectOptions(select);
-//        }
-//    }
 
     public void visitWeaponSmithUpgradeWeaponDialogue() {
         System.out.println("That will cost ya " + UPGRADE_COST + " gold, is that alright?");
@@ -268,8 +253,7 @@ public class MapleQuest {
         if (!(hero.weaponAtSlotNumber(select).weaponMaxTier())) {
             System.out.println("Alright, I've upgraded " + hero.getWeapons().get(select - 1).getWeaponName() + ".");
             hero.getWeapons().get(select - 1).upgradeWeapon();
-            int newGoldBalance = hero.getGold() - UPGRADE_COST;
-            hero.setGold(newGoldBalance);
+            hero.heroGoldCostAmount(UPGRADE_COST);
         } else {
             System.out.println("Hey buddy, I can't do anything more for this weapon, it's already the best.");
         }
@@ -277,7 +261,7 @@ public class MapleQuest {
     }
 
     public void visitWeaponSmithRemoveWeaponSelectOptions(int select) {
-        System.out.println("Alright, I've removed " + hero.getWeapons().get(select - 1).getWeaponName());
+        System.out.println("Alright, I've removed " + hero.getWeapons().get(select - 1).getWeaponName() + ".");
         hero.removeWeapon(select);
         visitWeaponSmith();
     }
@@ -313,8 +297,133 @@ public class MapleQuest {
     public void exploreTheWoods() {
         System.out.println("You're currently exploring the forest outside of Henesys.");
         System.out.println("What would you like to do?");
+        String selection = "";
+        while (!(selection.equals("e") || selection.equals("l") || selection.equals("r") || selection.equals("h"))) {
+            exploreTheWoodsDialogueOptions();
+            selection = input.next();
+            selection = selection.toLowerCase();
+        }
+        if (selection.equals("e")) {
+            generateRandomEncounter();
+        } else if (selection.equals("r")) {
+            hero.heroHeal(REST_HEAL_AMOUNT);
+            exploreTheWoods();
+        } else if (selection.equals("h")) {
+            heroStatus();
+            exploreTheWoods();
+        } else {
+            System.out.println("You begin the long trek back to town after some time.");
+        }
+    }
+
+    public void exploreTheWoodsDialogueOptions() {
         System.out.println("\te -> Continue Exploring Deeper Into The Woods");
+        System.out.println("\tr -> Rest and Recover A Bit Of Health" + " (" + REST_HEAL_AMOUNT + ").");
+        System.out.println("\th -> View Hero Statistics");
         System.out.println("\tl -> Leave and Return To Town");
+    }
+
+    public void generateRandomEncounter() {
+        Monster monster = generateSingleMonsterEncounter(monsters);
+        String selection = "";
+        while (!(selection.equals("a") || selection.equals("l"))) {
+            performBattleScenarioDialogueOptions();
+            selection = input.next();
+            selection = selection.toLowerCase();
+        }
+        if (selection.equals("a")) {
+            performAttackChoiceEntireSequence(monster);
+            while (!(hero.heroDeath() || monster.monsterDeath())) {
+                performBattleScenarioChoices(monster);
+            }
+            if (monster.monsterDeath()) {
+                resultMonsterDeath(monster);
+                monsters.remove(monster);
+                exploreTheWoods();
+            } else if (hero.heroDeath()) {
+                resultHeroDeath();
+                monsters.remove(monster);
+            }
+        } else {
+            performAttemptToFlee();
+        }
+    }
+
+    public Monster generateSingleMonsterEncounter(List<Monster> monsters) {
+        Monster monster = new Monster();
+        monsters.add(monster);
+        System.out.println("You've encountered a " + monster.getName() + "!");
+        return monster;
+    }
+
+    public void performBattleScenarioChoices(Monster monster) {
+        String selection = "";
+        while (!(selection.equals("a") || selection.equals("l"))) {
+            performBattleScenarioDialogueOptions();
+            selection = input.next();
+            selection = selection.toLowerCase();
+        }
+        if (selection.equals("a")) {
+            performAttackChoiceEntireSequence(monster);
+        } else {
+            monster.setHealth(0);
+        }
+    }
+
+    public void performBattleScenarioDialogueOptions() {
+        System.out.println("What will you do?");
+        System.out.println("\ta -> Attack");
+        System.out.println("\tl -> Attempt To Leave");
+    }
+
+    public int performAttackChoice() {
+        System.out.println("Which weapon will you attack with? (i.e. 1).");
+        displayWeapons();
+        int select;
+        while (!input.hasNextInt()) {
+            input.next();
+            System.out.println("Which weapon will you attack with?");
+            displayWeapons();
+        }
+        select = input.nextInt();
+        if (select == 1 || select == 2 || select == 3) {
+            if (select <= hero.getWeapons().size()) {
+                return hero.weaponAtSlotNumber(select).getWeaponDamage();
+            } else {
+                return performAttackChoice();
+            }
+        } else {
+            return performAttackChoice();
+        }
+    }
+
+    public void performAttackChoiceEntireSequence(Monster monster) {
+        int damageToMonster = performAttackChoice();
+        monster.damageToMonster(damageToMonster);
+        hero.damageToHero(monster.getDamage());
+        System.out.println("The " + monster.getName() + " hits for " + monster.getDamage()
+                + ". Your HP: " + hero.getHealth());
+        System.out.println("You swing at the monster and deal " + damageToMonster + " damage!"
+                + " Monster HP: " + monster.getHealth());
+    }
+
+    public void performAttemptToFlee() {
+        System.out.println("You managed to escape!");
+    }
+
+    public void resultMonsterDeath(Monster monster) {
+        System.out.println("Congratulations, you've slain the " + monster.getName() + "!");
+        hero.heroGainGold(monster.getGold());
+        hero.heroGainExperience(monster.getExperience());
+        if (hero.heroLevelUpPossible()) {
+            System.out.println(hero.heroLevelUp());
+        }
+    }
+
+    public void resultHeroDeath() {
+        System.out.println("You have been defeated in battle!  You pass out on the battlegrounds.");
+        System.out.println("You wake up wounded and confused, but it appears someone has brought you back to town.");
+        hero.setHealth(WOUNDED_HERO_HEALTH);
     }
 }
 
