@@ -17,6 +17,7 @@ In MapleQuest, users can expect the following features:
 
 - As a user, I want to be able to view my hero's current inventory and status
 - As a user, I want to be able to heal my hero from a vendor
+- As a user, I want to be able to carry multiple weapons
 - As a user, I want to purchase new weapons from a Weaponsmith
 - As a user, I want to upgrade weapons from a Weaponsmith
 - As a user, I want to be able dismantle weapons from the Weaponsmith

@@ -5,6 +5,7 @@ import model.Monster;
 import model.Weapon;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,15 +57,15 @@ public class MapleQuest {
     // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("h")) {
-            hero.heroStatus();
-        } else if (command.equals("m")) {
+            heroStatus();
+        } else if (command.equals("n")) {
             visitTownNurse();
-        } else if (command.equals("f")) {
-            visitWeaponSmith();
         } else if (command.equals("w")) {
+            visitWeaponSmith();
+        } else if (command.equals("i")) {
             displayWeapons();
         } else {
-            System.out.println("Try again");
+            System.out.println("Please try another input.");
         }
     }
 
@@ -79,11 +80,11 @@ public class MapleQuest {
     private void displayMenu() {
         System.out.println("You're currently in Henesys, home of adventurers!");
         System.out.println("Please select from the following options:");
-        System.out.println("\tm -> Visit the Town Nurse");
-        System.out.println("\tf -> Visit the Weaponsmith");
+        System.out.println("\tn -> Visit the Town Nurse");
+        System.out.println("\tw -> Visit the Weaponsmith");
         System.out.println("\te -> Explore The Woods");
         System.out.println("\th -> Hero Status");
-        System.out.println("\tw -> Weapon Inventory");
+        System.out.println("\ti -> Weapon Inventory");
         System.out.println("\tq -> Quit MapleQuest");
     }
 
@@ -185,25 +186,47 @@ public class MapleQuest {
         System.out.println("Hey, you're carrying too much, get rid of a weapon first.");
         System.out.println("Please type the slot number you wish to remove (i.e. 1).");
         displayWeapons();
-        int select = 0;
-        while (!(select == 1 || select == 2 || select == 3)) {
-            select = input.nextInt();
+        int select;
+        while (!input.hasNextInt()) {
+            input.next();
+            System.out.println("Hey, you're carrying too much, get rid of a weapon first.");
             System.out.println("Please type the slot number you wish to remove (i.e. 1).");
             displayWeapons();
         }
-        if (select == 1) {
-            visitWeaponSmithRemoveWeaponSelectOptions(select);
-        } else if (select == 2) {
-            visitWeaponSmithRemoveWeaponSelectOptions(select);
+        select = input.nextInt();
+        if (select == 1 || select == 2 || select == 3) {
+            if (select <= hero.getWeapons().size()) {
+                visitWeaponSmithRemoveWeaponSelectOptions(select);
+            } else {
+                visitWeaponSmithForgeWeaponOverCarrying();
+            }
         } else {
-            visitWeaponSmithRemoveWeaponSelectOptions(select);
+            visitWeaponSmithForgeWeaponOverCarrying();
         }
     }
+//        while (!(select == 1 || select == 2 || select == 3)) {
+//            try {
+//                select = input.nextInt();
+//                System.out.println("Please type the slot number you wish to remove (i.e. 1).");
+//                displayWeapons();
+//            } catch (InputMismatchException ex) {
+//                System.out.println("Incorrect input, please enter a slot value.");
+//            }
+//        }
+//        if (select == 1) {
+//            visitWeaponSmithRemoveWeaponSelectOptions(select);
+//        } else if (select == 2) {
+//            visitWeaponSmithRemoveWeaponSelectOptions(select);
+//        } else {
+//            visitWeaponSmithRemoveWeaponSelectOptions(select);
+//        }
+//    }
 
     public void visitWeaponSmithUpgradeWeaponDialogue() {
         System.out.println("That will cost ya " + UPGRADE_COST + " gold, is that alright?");
         String selection = "";
         while (!(selection.equals("y") || selection.equals("n"))) {
+            System.out.println("That will cost ya " + UPGRADE_COST + " gold, is that alright?");
             System.out.println("\ty -> Yes");
             System.out.println("\tn -> No");
             selection = input.next();
@@ -218,18 +241,23 @@ public class MapleQuest {
 
     public void visitWeaponSmithUpgradeWeaponAgreed() {
         if (hero.getGold() >= UPGRADE_COST) {
-            int select = 0;
+            int select;
             System.out.println("Alright, which weapon do you want me to upgrade? (i.e. 1).");
             displayWeapons();
-            while (select != 1 && select != 2 && select != 3) {
-                select = input.nextInt();
+            while (!input.hasNextInt()) {
+                input.next();
+                System.out.println("Alright, which weapon do you want me to upgrade? (i.e. 1).");
+                displayWeapons();
             }
-            if (select == 1) {
-                visitWeaponSmithUpgradeSelectOptions(select);
-            } else if (select == 2) {
-                visitWeaponSmithUpgradeSelectOptions(select);
+            select = input.nextInt();
+            if (select == 1 || select == 2 || select == 3) {
+                if (select <= hero.getWeapons().size()) {
+                    visitWeaponSmithUpgradeSelectOptions(select);
+                } else {
+                    visitWeaponSmithUpgradeWeaponAgreed();
+                }
             } else {
-                visitWeaponSmithUpgradeSelectOptions(select);
+                visitWeaponSmithUpgradeWeaponAgreed();
             }
         } else {
             System.out.println("You don't have enough gold, stop wasting my time adventurer.");
@@ -260,9 +288,10 @@ public class MapleQuest {
         if (allHeroWeapons.size() == 0) {
             System.out.println("You have no weapons in your inventory.");
         } else {
+            System.out.println("You have the following weapons in your inventory:");
             for (Weapon weapon : allHeroWeapons) {
-                System.out.print("Slot " + (slotNumber + 1) + ": ");
-                weaponStatistics(allHeroWeapons.get(slotNumber));
+                System.out.print("Slot " + (slotNumber + 1) + ") ");
+                weaponStatistics(weapon);
                 slotNumber++;
             }
         }
@@ -271,6 +300,21 @@ public class MapleQuest {
     public void weaponStatistics(Weapon weapon) {
         System.out.println(weapon.getWeaponName() + ": " + weapon.getWeaponDamage() + " Damage, Tier: "
                 + weapon.getWeaponTier() + " and Type: " + weapon.getWeaponType());
+    }
+
+    public void heroStatus() {
+        System.out.println(hero.getName() + " has the following status:");
+        System.out.println("Health: " + hero.getHealth());
+        System.out.println("Experience: " + hero.getExperience());
+        System.out.println("Level: " + hero.getLevel());
+        System.out.println("Gold: " + hero.getGold());
+    }
+
+    public void exploreTheWoods() {
+        System.out.println("You're currently exploring the forest outside of Henesys.");
+        System.out.println("What would you like to do?");
+        System.out.println("\te -> Continue Exploring Deeper Into The Woods");
+        System.out.println("\tl -> Leave and Return To Town");
     }
 }
 

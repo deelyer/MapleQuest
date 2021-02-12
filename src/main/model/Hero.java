@@ -28,6 +28,10 @@ public class Hero {
     }
 
     // getters
+    public String getName() {
+        return name;
+    }
+
     public int getHealth() {
         return health;
     }
@@ -57,14 +61,7 @@ public class Hero {
         this.gold = gold;
     }
 
-    public void heroStatus() {
-        System.out.println(this.name + " has the following status:");
-        System.out.println("Health: " + this.health);
-        System.out.println("Experience: " + this.experience);
-        System.out.println("Level: " + this.level);
-        System.out.println("Gold: " + this.gold);
-    }
-
+    // EFFECTS: gets the hero's maximum health
     public int heroMaxHealth() {
         return INITIAL_HERO_HEALTH * getLevel();
     }
@@ -92,5 +89,9 @@ public class Hero {
 
     public Weapon weaponAtSlotNumber(int slot) {
         return weapons.get(slot - 1);
+    }
+
+    public int weaponIndexAtSlotNumber(int slot) {
+        return weapons.indexOf(slot - 1);
     }
 }

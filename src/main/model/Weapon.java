@@ -54,11 +54,6 @@ public class Weapon {
         this.weaponDamage += (this.weaponTier * DAMAGE_UPGRADE_PER_TIER);
     }
 
-//    public void weaponStatistics() {
-//        System.out.println(getWeaponName() + ": " + getWeaponDamage() + " Damage, Tier: " + getWeaponTier()
-//                + " and Type: " + getWeaponType());
-//    }
-
     public boolean weaponMaxTier() {
         int currentWeaponTier = getWeaponTier();
         return currentWeaponTier == MAX_WEAPON_TIER;
