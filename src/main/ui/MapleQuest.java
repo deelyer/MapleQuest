@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
+// MapleQuest Simple RPG application
 public class MapleQuest {
 
     private static final int HEAL_COST = 50;
@@ -16,6 +16,7 @@ public class MapleQuest {
     private static final int UPGRADE_COST = 50;
     private static final int REST_HEAL_AMOUNT = 5;
     private static final int WOUNDED_HERO_HEALTH = 10;
+    private static final int MAX_WEAPON_TIER = 5;
 
     private Hero hero;
     private List<Monster> monsters;
@@ -28,6 +29,7 @@ public class MapleQuest {
 
     // MODIFIES: this
     // EFFECTS: processes user input
+    // Code: partial code snippet taken from TellerApp
     private void runMapleQuest() {
         boolean keepGoing = true;
         String command;
@@ -56,6 +58,7 @@ public class MapleQuest {
 
     // MODIFIES: this
     // EFFECTS: processes user command
+    // Code: partial code snippet taken from TellerApp
     private void processCommand(String command) {
         if (command.equals("h")) {
             heroStatus();
@@ -91,6 +94,7 @@ public class MapleQuest {
         System.out.println("\tq -> Quit MapleQuest");
     }
 
+    // EFFECTS: generates Town Nurse initial dialogue, processes user input while visiting
     private void visitTownNurse() {
         System.out.println("You're currently at the Town Nurse.");
         System.out.println("Why hello, you must be another adventurer, how many I help you today?");
@@ -108,6 +112,8 @@ public class MapleQuest {
         }
     }
 
+    // MODIFIES: hero
+    // EFFECTS: generates dialogue if user selected heal option, processes user input, heals hero if possible
     private void visitTownNurseHealDialogue() {
         String selection = "";
         System.out.println("That will cost " + HEAL_COST + " gold, is that okay?");
@@ -130,6 +136,7 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: generates Weaponsmith initial dialogue, processes user input while visiting
     private void visitWeaponSmith() {
         System.out.println("You're currently at the Weaponsmith.");
         System.out.println("Hmph, how may I help you today traveller?");
@@ -150,6 +157,7 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: generates Weaponsmith forge weapon dialogue, processes user input
     public void visitWeaponSmithForgeWeaponDialogue() {
         System.out.println("That will cost ya " + FORGE_COST + " gold, is that alright?");
         String selection = "";
@@ -167,6 +175,8 @@ public class MapleQuest {
         }
     }
 
+    // MODIFIES: hero
+    // EFFECTS: generates Weaponsmith forge weapon agreed dialogue, processes user input, adds weapon to hero
     public void visitWeaponSmithForgeWeaponDialogueAgreed() {
         if (hero.getGold() >= FORGE_COST) {
             if (hero.getWeapons().size() < 3) {
@@ -184,6 +194,7 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: generates Weaponsmith dialogue if too many weapons carried during forging, processes user input
     public void visitWeaponSmithForgeWeaponOverCarrying() {
         System.out.println("Hey, you're carrying too much, get rid of a weapon first.");
         System.out.println("Please type the slot number you wish to remove (i.e. 1).");
@@ -207,6 +218,7 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: generates Weaponsmith upgrade weapon diagloue, processes user input
     public void visitWeaponSmithUpgradeWeaponDialogue() {
         System.out.println("That will cost ya " + UPGRADE_COST + " gold, is that alright?");
         String selection = "";
@@ -224,6 +236,7 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: generates Weaponsmith diagloue if upgrade agreed, processes user input
     public void visitWeaponSmithUpgradeWeaponAgreed() {
         if (hero.getGold() >= UPGRADE_COST) {
             int select;
@@ -249,8 +262,11 @@ public class MapleQuest {
         }
     }
 
+    // REQUIRES: select must be valid slot number (i.e. weapon must exist in slot)
+    // MODIFIES: hero
+    // EFFECTS: processes which weapon in specified slot to upgrade, brings back to Weaponsmith dialogue after
     public void visitWeaponSmithUpgradeSelectOptions(int select) {
-        if (!(hero.weaponAtSlotNumber(select).weaponMaxTier())) {
+        if (!(hero.weaponAtSlotNumber(select).weaponMaxTier(MAX_WEAPON_TIER))) {
             System.out.println("Alright, I've upgraded " + hero.getWeapons().get(select - 1).getWeaponName() + ".");
             hero.getWeapons().get(select - 1).upgradeWeapon();
             hero.heroGoldCostAmount(UPGRADE_COST);
@@ -260,12 +276,16 @@ public class MapleQuest {
         visitWeaponSmith();
     }
 
+    // REQUIRES: select must be a valid slot number (i.e. weapon must exist in slot)
+    // MODIFIES: hero
+    // EFFECTS: removes weapon specified in slot selected, brings back to Weaponsmith dialogue after
     public void visitWeaponSmithRemoveWeaponSelectOptions(int select) {
         System.out.println("Alright, I've removed " + hero.getWeapons().get(select - 1).getWeaponName() + ".");
         hero.removeWeapon(select);
         visitWeaponSmith();
     }
 
+    // EFFECTS: displays the list of weapons currently carried
     public void displayWeapons() {
         int slotNumber = 0;
         List<Weapon> allHeroWeapons = hero.getWeapons();
@@ -281,11 +301,14 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: displays the weapon statistics of the specified weapon
     public void weaponStatistics(Weapon weapon) {
         System.out.println(weapon.getWeaponName() + ": " + weapon.getWeaponDamage() + " Damage, Tier: "
-                + weapon.getWeaponTier() + " and Type: " + weapon.getWeaponType());
+                + weapon.getWeaponTier());
+//                + " and Type: " + weapon.getWeaponType());
     }
 
+    // EFFECTS: displays the hero's statistics
     public void heroStatus() {
         System.out.println(hero.getName() + " has the following status:");
         System.out.println("Health: " + hero.getHealth());
@@ -294,6 +317,8 @@ public class MapleQuest {
         System.out.println("Gold: " + hero.getGold());
     }
 
+    // MODIFIES: hero
+    // EFFECTS: generates exploring the woods dialogue, processes user input, allows rest to heal hero's health
     public void exploreTheWoods() {
         System.out.println("You're currently exploring the forest outside of Henesys.");
         System.out.println("What would you like to do?");
@@ -316,6 +341,7 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: generates exploring the woods selectable options
     public void exploreTheWoodsDialogueOptions() {
         System.out.println("\te -> Continue Exploring Deeper Into The Woods");
         System.out.println("\tr -> Rest and Recover A Bit Of Health" + " (" + REST_HEAL_AMOUNT + ").");
@@ -323,6 +349,8 @@ public class MapleQuest {
         System.out.println("\tl -> Leave and Return To Town");
     }
 
+    // MODIFIES: hero and monsters
+    // EFFECTS: generates a random encounter with a monster, processes user input to attack or flee
     public void generateRandomEncounter() {
         Monster monster = generateSingleMonsterEncounter(monsters);
         String selection = "";
@@ -349,13 +377,17 @@ public class MapleQuest {
         }
     }
 
+    // MODIFIES: monsters
+    // EFFECTS: generates a single monster only encounter
     public Monster generateSingleMonsterEncounter(List<Monster> monsters) {
         Monster monster = new Monster();
         monsters.add(monster);
+        monster.scaleMonsterStatistics(hero.getLevel());
         System.out.println("You've encountered a " + monster.getName() + "!");
         return monster;
     }
 
+    // EFFECTS: processes the possible options once in a battle scenario
     public void performBattleScenarioChoices(Monster monster) {
         String selection = "";
         while (!(selection.equals("a") || selection.equals("l"))) {
@@ -370,12 +402,14 @@ public class MapleQuest {
         }
     }
 
+    // EFFECTS: generates the dialogue for selectable options within a battle scenario
     public void performBattleScenarioDialogueOptions() {
         System.out.println("What will you do?");
         System.out.println("\ta -> Attack");
         System.out.println("\tl -> Attempt To Leave");
     }
 
+    // EFFECTS: processes which weapon the user selects to attack with, retrives the approriate weapon damage
     public int performAttackChoice() {
         System.out.println("Which weapon will you attack with? (i.e. 1).");
         displayWeapons();
@@ -397,6 +431,8 @@ public class MapleQuest {
         }
     }
 
+    // MODIFIES: monster
+    // EFFECTS: deals damage to monster based on weapon choice of user
     public void performAttackChoiceEntireSequence(Monster monster) {
         int damageToMonster = performAttackChoice();
         monster.damageToMonster(damageToMonster);
@@ -407,19 +443,22 @@ public class MapleQuest {
                 + " Monster HP: " + monster.getHealth());
     }
 
+    // EFFECTS: during a battle encounter, have the option to escape
     public void performAttemptToFlee() {
         System.out.println("You managed to escape!");
     }
 
+    // MODIFIES: hero
+    // EFFECTS: updates hero with gold and experience after monster death, level up if possible (i.e. enough exp)
     public void resultMonsterDeath(Monster monster) {
         System.out.println("Congratulations, you've slain the " + monster.getName() + "!");
         hero.heroGainGold(monster.getGold());
         hero.heroGainExperience(monster.getExperience());
-        if (hero.heroLevelUpPossible()) {
-            System.out.println(hero.heroLevelUp());
-        }
+        hero.heroLevelUp();
     }
 
+    // MODIFIES: hero
+    // EFFECTS: updates hero with wounded health state after losing/dying in battle encounter
     public void resultHeroDeath() {
         System.out.println("You have been defeated in battle!  You pass out on the battlegrounds.");
         System.out.println("You wake up wounded and confused, but it appears someone has brought you back to town.");

@@ -2,32 +2,31 @@ package model;
 
 import java.util.Random;
 
-// Represents a weapon with a name, damage, tier, and elemental type
+// Represents a weapon with a name, damage, and tier
 public class Weapon {
 
     private static final int INITIAL_WEAPON_DAMAGE = 10;
     private static final int INITIAL_WEAPON_TIER = 1;
     private static final int DAMAGE_UPGRADE_PER_TIER = 10;
-    private static final int MAX_WEAPON_TIER = 5;
 
     private String weaponName;          // the name of the weapon
     private int weaponDamage;           // the amount of damage a weapon does
     private int weaponTier;             // the weapon tier level (from 1 to 5)
-    private String weaponType;          // the elemental type of the weapon
+//    private String weaponType;          // the elemental type of the weapon
 
     public Weapon(String weaponName) {
         this.weaponName = weaponName;
         this.weaponTier = INITIAL_WEAPON_TIER;
         this.weaponDamage = INITIAL_WEAPON_DAMAGE;
-        Random random = new Random();
-        int choice = random.nextInt(100);
-        if (choice < 33) {
-            this.weaponType = "Fire";
-        } else if (choice < 67) {
-            this.weaponType = "Grass";
-        } else {
-            this.weaponType = "Water";
-        }
+//        Random random = new Random();
+//        int choice = random.nextInt(100);
+//        if (choice < 33) {
+//            this.weaponType = "Fire";
+//        } else if (choice < 67) {
+//            this.weaponType = "Grass";
+//        } else {
+//            this.weaponType = "Water";
+//        }
     }
 
     // getters
@@ -43,29 +42,35 @@ public class Weapon {
         return weaponTier;
     }
 
-    public String getWeaponType() {
-        return weaponType;
+    // setters
+    public void setWeaponTier(int weaponTier) {
+        this.weaponTier = weaponTier;
     }
 
     // MODIFIES: this
     // EFFECTS: upgrade tier of weapon, and corresponding damage by tier
     public void upgradeWeapon() {
         this.weaponTier++;
-        this.weaponDamage += (this.weaponTier * DAMAGE_UPGRADE_PER_TIER);
+        this.weaponDamage = (this.weaponTier * DAMAGE_UPGRADE_PER_TIER);
     }
 
-    public boolean weaponMaxTier() {
-        int currentWeaponTier = getWeaponTier();
-        return currentWeaponTier == MAX_WEAPON_TIER;
+    // EFFECTS: determines if weapon tier has reached/surpassed the maximum tier
+    public boolean weaponMaxTier(int maxTier) {
+        return this.weaponTier >= maxTier;
     }
 
-    public boolean weaponSuperEffectiveType(String otherType) {
-        if (this.weaponType.equals("Fire") && otherType.equals("Grass")) {
-            return true;
-        } else if (this.weaponType.equals("Grass") && otherType.equals("Water")) {
-            return true;
-        } else {
-            return this.weaponType.equals("Water") && otherType.equals("Fire");
-        }
-    }
+
+//    public boolean weaponSuperEffectiveType(String otherType) {
+//        if (this.weaponType.equals("Fire") && otherType.equals("Grass")) {
+//            return true;
+//        } else if (this.weaponType.equals("Grass") && otherType.equals("Water")) {
+//            return true;
+//        } else {
+//            return this.weaponType.equals("Water") && otherType.equals("Fire");
+//        }
+//    }
+//
+//    public String getWeaponType() {
+//        return weaponType;
+//    }
 }

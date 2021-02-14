@@ -21,6 +21,5 @@ In MapleQuest, users can expect the following features:
 - As a user, I want to purchase new weapons from a Weaponsmith
 - As a user, I want to upgrade weapons from a Weaponsmith
 - As a user, I want to be able dismantle weapons from the Weaponsmith
-- As a user, I want to have different weapon types (i.e. elements)
-- As a user, I want to battle different monsters
-- As a user, I want to be able to select between different weapons from my inventory
+- As a user, I want to battle monsters.
+- As a user, I want to be able to select between different weapons from my inventory to attack with.

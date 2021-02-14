@@ -9,14 +9,15 @@ public class Hero {
     private static final int INITIAL_HERO_HEALTH = 10;
     private static final int INITIAL_HERO_EXPERIENCE = 0;
     private static final int INITIAL_HERO_LEVEL = 1;
-    private static final int INITIAL_HERO_GOLD = 100;
-    private static final Weapon INITIAL_HERO_WEAPON = new Weapon("Sword");
-    private static final int LEVEL_UP_EXP_REQUIRED = 1000;
+    private static final int INITIAL_HERO_GOLD = 0;
+//    private static final Weapon INITIAL_HERO_WEAPON = new Weapon("Sword");
+    private static final int INITIAL_LEVEL_UP_EXP_REQUIRED = 1000;
 
     private String name;            // the hero's name
     private int health;             // the hero's health points
     private int experience;         // the hero's experience points
     private int level;              // the hero's current level
+    private int levelUpExpRequired; // the hero's experience required to level
     private int gold;               // the hero's current amount of gold
     private List<Weapon> weapons;   // the hero's current inventory of weapons
 
@@ -25,9 +26,10 @@ public class Hero {
         this.health = INITIAL_HERO_HEALTH;
         this.experience = INITIAL_HERO_EXPERIENCE;
         this.level = INITIAL_HERO_LEVEL;
+        this.levelUpExpRequired = INITIAL_LEVEL_UP_EXP_REQUIRED;
         this.gold = INITIAL_HERO_GOLD;
         this.weapons = new ArrayList<>();
-        this.weapons.add(INITIAL_HERO_WEAPON);
+//        this.weapons.add(INITIAL_HERO_WEAPON);
     }
 
     // getters
@@ -55,9 +57,21 @@ public class Hero {
         return weapons;
     }
 
+    public int getLevelUpExpRequired() {
+        return levelUpExpRequired;
+    }
+
     // setters
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public void heroGoldCostAmount(int gold) {
@@ -69,44 +83,47 @@ public class Hero {
         return INITIAL_HERO_HEALTH * getLevel();
     }
 
-    // REQUIRES: amount > 0
     // MODIFIES: this
     // EFFECTS: heals the hero by the specified amount
     public void heroHeal(int amount) {
         this.health += amount;
     }
 
+    // MODIFIES: this
+    // EFFECTS: damages the hero by the specified amount
     public void damageToHero(int damage) {
         this.health -= damage;
     }
 
+    // EFFECTS: determines if the hero's health reaches or passes 0, thus death
     public boolean heroDeath() {
         return this.health <= 0;
     }
 
+    // MODIFIES: this
+    // EFFECTS: hero gains the specified amount of gold
     public void heroGainGold(int amount) {
         this.gold += amount;
     }
 
+    // MODIFIES: this
+    // EFFECTS: hero gains the specified amount of experience
     public void heroGainExperience(int experience) {
         this.experience += experience;
     }
 
-    public boolean heroLevelUpPossible() {
-        return (this.experience >= LEVEL_UP_EXP_REQUIRED);
-    }
-
-    // need to fix!
-    public String heroLevelUp() {
-        while (this.experience >= LEVEL_UP_EXP_REQUIRED) {
+    // MODIFIES: this
+    // EFFECTS: hero levels up if sufficient experience, increases statistics based on increased level
+    public void heroLevelUp() {
+        while (this.experience >= this.levelUpExpRequired) {
             this.level++;
-            this.experience = this.experience - LEVEL_UP_EXP_REQUIRED;
-            setHealth(heroMaxHealth());
-            return ("You have leveled up! Your current level is: " + this.level);
+            this.experience -= this.levelUpExpRequired;
+            this.health = heroMaxHealth();
+            this.levelUpExpRequired = this.levelUpExpRequired * getLevel();
         }
-        return null;
     }
 
+    // REQUIRES: weaponName needs to be a String character
     // MODIFIES: this
     // EFFECTS: adds a weapon to the hero's inventory
     public void addWeapon(String weaponName) {
@@ -118,11 +135,20 @@ public class Hero {
     // MODIFIES: this
     // EFFECTS: removes a weapon from the hero's inventory
     public void removeWeapon(int weaponInInventory) {
-        this.weapons.remove(weaponInInventory - 1);
+        if (this.weapons.size() > 0) {
+            this.weapons.remove(weaponInInventory - 1);
+        }
     }
 
+    // REQUIRES: slot number > 0
+    // EFFECTS: retrieves the weapon at the indicated slot number in inventory
     public Weapon weaponAtSlotNumber(int slot) {
         return weapons.get(slot - 1);
+    }
+
+    // EFFECTS: determining if specified weapon is present within inventory
+    public boolean determineWeaponPresent(Weapon weapon) {
+        return weapons.contains(weapon);
     }
 
 }
