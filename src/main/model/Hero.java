@@ -135,9 +135,7 @@ public class Hero {
     // MODIFIES: this
     // EFFECTS: removes a weapon from the hero's inventory
     public void removeWeapon(int weaponInInventory) {
-        if (this.weapons.size() > 0) {
-            this.weapons.remove(weaponInInventory - 1);
-        }
+        this.weapons.remove(weaponInInventory - 1);
     }
 
     // REQUIRES: slot number > 0
