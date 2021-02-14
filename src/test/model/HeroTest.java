@@ -20,14 +20,14 @@ public class HeroTest {
         assertEquals(0, link.getExperience());
         assertEquals(1, link.getLevel());
         assertEquals(1000, link.getLevelUpExpRequired());
-        assertEquals(0, link.getGold());
+        assertEquals(50, link.getGold());
         assertEquals(0, link.getWeapons().size());
     }
 
     @Test
     public void testHeroEnoughSpendingGold() {
         int spend = 100;
-        assertEquals(0, link.getGold());
+        assertEquals(50, link.getGold());
         link.setGold(100);
         assertEquals(100, link.getGold());
         link.heroGoldCostAmount(spend);
@@ -37,7 +37,7 @@ public class HeroTest {
     @Test
     public void testHeroOverSpendingGold() {
         int spend = 100;
-        assertEquals(0, link.getGold());
+        assertEquals(50, link.getGold());
         link.setGold(50);
         assertEquals(50, link.getGold());
         link.heroGoldCostAmount(spend);
@@ -48,7 +48,7 @@ public class HeroTest {
     public void testHeroSpendingGoldTwice() {
         int spend = 100;
         int spend2 = 50;
-        assertEquals(0, link.getGold());
+        assertEquals(50, link.getGold());
         link.setGold(300);
         assertEquals(300, link.getGold());
         link.heroGoldCostAmount(spend);
@@ -113,11 +113,11 @@ public class HeroTest {
     public void testHeroGainGold() {
         int gold = 20;
         int gold2 = 10;
-        assertEquals(0, link.getGold());
+        assertEquals(50, link.getGold());
         link.heroGainGold(gold);
-        assertEquals(20, link.getGold());
+        assertEquals(70, link.getGold());
         link.heroGainGold(gold2);
-        assertEquals(30, link.getGold());
+        assertEquals(80, link.getGold());
     }
 
     @Test

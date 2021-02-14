@@ -67,7 +67,12 @@ public class MapleQuest {
         } else if (command.equals("w")) {
             visitWeaponSmith();
         } else if (command.equals("e")) {
-            exploreTheWoods();
+            if (hero.getWeapons().size() <= 0) {
+                System.out.println("Town Guard: Adventurer, you don't have a weapon! Visit the Weaponsmith first!");
+            } else {
+                System.out.println("Town Guard: Seems like you're prepared, don't die out there.");
+                exploreTheWoods();
+            }
         } else if (command.equals("i")) {
             displayWeapons();
         } else {
@@ -106,7 +111,11 @@ public class MapleQuest {
             selection = selection.toLowerCase();
         }
         if (selection.equals("h")) {
-            visitTownNurseHealDialogue();
+            if (hero.getHealth() >= hero.heroMaxHealth()) {
+                System.out.println("Adventurer, you're completely healthy!  Come back when you're hurt.");
+            } else {
+                visitTownNurseHealDialogue();
+            }
         } else {
             System.out.println("See you later!");
         }
@@ -151,7 +160,11 @@ public class MapleQuest {
         if (selection.equals("f")) {
             visitWeaponSmithForgeWeaponDialogue();
         } else if (selection.equals("u")) {
-            visitWeaponSmithUpgradeWeaponDialogue();
+            if (hero.getWeapons().size() <= 0) {
+                System.out.println("Adventurer, you don't have a weapon! Forge a weapon first!");
+            } else {
+                visitWeaponSmithUpgradeWeaponDialogue();
+            }
         } else {
             System.out.println("Hmph, see you next time adventurer.");
         }
@@ -159,7 +172,6 @@ public class MapleQuest {
 
     // EFFECTS: generates Weaponsmith forge weapon dialogue, processes user input
     public void visitWeaponSmithForgeWeaponDialogue() {
-        System.out.println("That will cost ya " + FORGE_COST + " gold, is that alright?");
         String selection = "";
         while (!(selection.equals("y") || selection.equals("n"))) {
             System.out.println("That will cost ya " + FORGE_COST + " gold, is that alright?");
@@ -220,7 +232,6 @@ public class MapleQuest {
 
     // EFFECTS: generates Weaponsmith upgrade weapon diagloue, processes user input
     public void visitWeaponSmithUpgradeWeaponDialogue() {
-        System.out.println("That will cost ya " + UPGRADE_COST + " gold, is that alright?");
         String selection = "";
         while (!(selection.equals("y") || selection.equals("n"))) {
             System.out.println("That will cost ya " + UPGRADE_COST + " gold, is that alright?");
@@ -236,7 +247,7 @@ public class MapleQuest {
         }
     }
 
-    // EFFECTS: generates Weaponsmith diagloue if upgrade agreed, processes user input
+    // EFFECTS: generates Weaponsmith dialogue if upgrade agreed, processes user input
     public void visitWeaponSmithUpgradeWeaponAgreed() {
         if (hero.getGold() >= UPGRADE_COST) {
             int select;
