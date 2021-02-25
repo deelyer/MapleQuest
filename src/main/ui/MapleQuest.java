@@ -1,9 +1,14 @@
 package ui;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import model.Hero;
 import model.Monster;
 import model.Weapon;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,10 +22,13 @@ public class MapleQuest {
     private static final int REST_HEAL_AMOUNT = 5;
     private static final int WOUNDED_HERO_HEALTH = 10;
     private static final int MAX_WEAPON_TIER = 5;
+    private static final String JSON_STORE = "./data/hero.json";
 
     private Hero hero;
     private List<Monster> monsters;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs MapleQuest application
     public MapleQuest() {
@@ -35,12 +43,6 @@ public class MapleQuest {
         String command;
 
         init();
-
-        System.out.println("Greetings traveller, welcome to the world of Aurora!");
-        System.out.println("By what name do you go by?");
-        String name = input.next();
-        hero = new Hero(name);
-        System.out.println("Ah! Well nice to meet you " + name + ", please follow me into town.");
 
         while (keepGoing) {
             displayMenu();
@@ -75,6 +77,10 @@ public class MapleQuest {
             }
         } else if (command.equals("i")) {
             displayWeapons();
+        } else if (command.equals("s")) {
+            saveHeroToFile();
+        } else if (command.equals("l")) {
+            loadHeroFromFile();
         } else {
             System.out.println("Please try another input.");
         }
@@ -85,6 +91,13 @@ public class MapleQuest {
     private void init() {
         monsters = new ArrayList<>();
         input = new Scanner(System.in);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        System.out.println("Greetings traveller, welcome to the world of Aurora!");
+        System.out.println("By what name do you go by?");
+        String name = input.next();
+        hero = new Hero(name);
+        System.out.println("Ah! Well nice to meet you " + name + ", please follow me into town.");
     }
 
     // EFFECTS: displays menu of options to user
@@ -96,6 +109,8 @@ public class MapleQuest {
         System.out.println("\te -> Explore The Woods");
         System.out.println("\th -> Hero Status");
         System.out.println("\ti -> Weapon Inventory");
+        System.out.println("\ts -> Save Hero's Weapons");
+        System.out.println("\tl -> Load Hero's Weapons");
         System.out.println("\tq -> Quit MapleQuest");
     }
 
@@ -475,5 +490,30 @@ public class MapleQuest {
         System.out.println("You wake up wounded and confused, but it appears someone has brought you back to town.");
         hero.setHealth(WOUNDED_HERO_HEALTH);
     }
+
+    // Code snippet from: WorkRoomApp
+    // EFFECTS: saves the hero to file
+    private void saveHeroToFile() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(hero);
+            jsonWriter.close();
+            System.out.println("Saved " + hero.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // Code snippet from: WorkRoomApp
+    // EFFECTS: loads hero from file
+    private void loadHeroFromFile() {
+        try {
+            hero = jsonReader.read();
+            System.out.println("Loaded " + hero.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
 }
 

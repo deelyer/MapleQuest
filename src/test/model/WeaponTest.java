@@ -21,6 +21,14 @@ public class WeaponTest {
     }
 
     @Test
+    public void testConstructorWithNameDamageTier() {
+        Weapon sword = new Weapon("Sword",1,10);
+        assertEquals("Sword",sword.getWeaponName());
+        assertEquals(1,sword.getWeaponDamage());
+        assertEquals(10,sword.getWeaponTier());
+    }
+
+    @Test
     public void testUpgradeWeapon() {
         exalibur.upgradeWeapon();
         assertEquals(2, exalibur.getWeaponTier());

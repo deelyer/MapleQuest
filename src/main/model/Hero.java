@@ -128,7 +128,6 @@ public class Hero implements Writable {
         }
     }
 
-    // TODO: *** NEED TO ADD TEST ***
     // MODIFIES: this
     // EFFECTS: adds a weapon to the hero's inventory
     public void addWeapon(Weapon weapon) {

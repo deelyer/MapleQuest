@@ -33,7 +33,6 @@ public class Weapon implements Writable {
 //        }
     }
 
-    // TODO: NEED TO WRITE TEST
     // EFFECTS: constructs a new weapon with given name, damage, and tier
     public Weapon(String weaponName, int weaponDamage, int weaponTier) {
         this.weaponName = weaponName;

@@ -173,6 +173,13 @@ public class HeroTest {
         assertTrue(link.determineWeaponPresent(link.getWeapons().get(1)));
     }
 
+    @Test
+    public void testHeroAddWeaponWithParameter() {
+        Weapon testWeapon = new Weapon("Sword");
+        link.addWeapon(testWeapon);
+        assertEquals(1, link.getWeapons().size());
+        assertTrue(link.determineWeaponPresent(link.getWeapons().get(0)));
+    }
 
     @Test
     public void testHeroRemoveOneWeapon() {
@@ -229,5 +236,6 @@ public class HeroTest {
         assertTrue(link.determineWeaponPresent(link.getWeapons().get(0)));
         assertEquals(link.getWeapons().get(0), link.weaponAtSlotNumber(1));
     }
+
 
 }
