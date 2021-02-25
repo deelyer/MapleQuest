@@ -123,6 +123,13 @@ public class Hero {
         }
     }
 
+    // TODO: *** NEED TO ADD TEST ***
+    // MODIFIES: this
+    // EFFECTS: adds a weapon to the hero's inventory
+    public void addWeapon(Weapon weapon) {
+        this.weapons.add(weapon);
+    }
+
     // REQUIRES: weaponName needs to be a String character
     // MODIFIES: this
     // EFFECTS: adds a weapon to the hero's inventory
@@ -148,5 +155,6 @@ public class Hero {
     public boolean determineWeaponPresent(Weapon weapon) {
         return weapons.contains(weapon);
     }
+
 
 }
