@@ -21,6 +21,7 @@ public class Hero {
     private int gold;               // the hero's current amount of gold
     private List<Weapon> weapons;   // the hero's current inventory of weapons
 
+    // EFFECTS: constructs a new hero with given name
     public Hero(String name) {
         this.name = name;
         this.health = INITIAL_HERO_HEALTH;

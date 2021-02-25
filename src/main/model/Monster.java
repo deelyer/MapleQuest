@@ -16,6 +16,7 @@ public class Monster {
     private int gold;                  // the monster's amount of gold carried
     private int damage;                // the monster's amount of damage done
 
+    // EFFECTS: constructs a new monster named "Goblin"
     public Monster() {
         this.name = "Goblin";
         this.health = INITIAL_MONSTER_HEALTH;

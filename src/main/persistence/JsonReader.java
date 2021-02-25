@@ -68,7 +68,9 @@ public class JsonReader {
     // EFFECTS: parses weapon from JSON object and adds it to hero
     private void addWeapon(Hero hero, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
-        Weapon weapon = new Weapon(name);
+        int weaponDamage = jsonObject.getInt("weapondamage");
+        int weaponTier = jsonObject.getInt("weapontier");
+        Weapon weapon = new Weapon(name, weaponDamage, weaponTier);
         hero.addWeapon(weapon);
     }
 

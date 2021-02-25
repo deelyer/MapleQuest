@@ -14,6 +14,7 @@ public class Weapon {
     private int weaponTier;             // the weapon tier level (from 1 to 5)
 //    private String weaponType;          // the elemental type of the weapon
 
+    // EFFECTS: constructs a new weapon with given name
     public Weapon(String weaponName) {
         this.weaponName = weaponName;
         this.weaponTier = INITIAL_WEAPON_TIER;
@@ -27,6 +28,14 @@ public class Weapon {
 //        } else {
 //            this.weaponType = "Water";
 //        }
+    }
+
+    // TODO: NEED TO WRITE TEST
+    // EFFECTS: constructs a new weapon with given name, damage, and tier
+    public Weapon(String weaponName, int weaponDamage, int weaponTier) {
+        this.weaponName = weaponName;
+        this.weaponDamage = weaponDamage;
+        this.weaponTier = weaponTier;
     }
 
     // getters

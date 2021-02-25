@@ -1,0 +1,15 @@
+{
+    "weapons": [
+        {
+            "name": "Sword",
+            "weapondamage": 10,
+            "weapontier": 1,
+        },
+        {
+            "name": "Dagger",
+            "weapondamage": 20,
+            "weapontier": 2,
+        }
+  ],
+  "name": "My Hero"
+}
