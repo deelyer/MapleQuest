@@ -23,3 +23,5 @@ In MapleQuest, users can expect the following features:
 - As a user, I want to be able dismantle weapons from the Weaponsmith
 - As a user, I want to battle monsters.
 - As a user, I want to be able to select between different weapons from my inventory to attack with.
+- As a user, I want to be able to save my progress with the hero I've created to file.
+- As a user, I want to be able to reload the game state with my previously created hero from file.
