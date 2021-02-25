@@ -1,8 +1,5 @@
 package persistence;
 
-
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import jdk.jfr.Category;
 import model.Hero;
 import model.Weapon;
 import org.json.JSONArray;
@@ -14,8 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-// Represents a reader that reads mapledata from JSON data stored in file
+// Represents a reader that reads hero from JSON data stored in file
 public class JsonReader {
+
     private String source;
 
     // Code snippet from: WorkRoomApp
@@ -54,6 +52,7 @@ public class JsonReader {
         return hero;
     }
 
+    // Partial code snippet from: WorkRoomApp
     // MODIFIES: hero
     // EFFECTS: parses weapons from JSON object and adds them to hero
     private void addWeapons(Hero hero, JSONObject jsonObject) {
@@ -64,7 +63,8 @@ public class JsonReader {
         }
     }
 
-    // MODIFIES: md
+    // Partial code snippet from: WorkRoomApp
+    // MODIFIES: hero
     // EFFECTS: parses weapon from JSON object and adds it to hero
     private void addWeapon(Hero hero, JSONObject jsonObject) {
         String name = jsonObject.getString("name");

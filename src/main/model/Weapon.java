@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.Random;
 
 // Represents a weapon with a name, damage, and tier
-public class Weapon {
+public class Weapon implements Writable {
 
     private static final int INITIAL_WEAPON_DAMAGE = 10;
     private static final int INITIAL_WEAPON_TIER = 1;
@@ -66,6 +69,18 @@ public class Weapon {
     // EFFECTS: determines if weapon tier has reached/surpassed the maximum tier
     public boolean weaponMaxTier(int maxTier) {
         return this.weaponTier >= maxTier;
+    }
+
+
+    @Override
+    // Code snippet from: WorkRoomApp
+    // EFFECTS: converts weapon to JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", weaponName);
+        json.put("weapondamage", weaponDamage);
+        json.put("weapontier", weaponTier);
+        return json;
     }
 
 

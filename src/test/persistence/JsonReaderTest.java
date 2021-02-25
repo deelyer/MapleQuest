@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JsonReaderTest extends JsonTest {
 
     @Test
+    // Code snippet from: WorkRoomApp
     public void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noFile.json");
         try {

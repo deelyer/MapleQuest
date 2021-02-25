@@ -1,10 +1,14 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // Represents a hero having a name, health points, experience, level, and weapons
-public class Hero {
+public class Hero implements Writable {
 
     private static final int INITIAL_HERO_HEALTH = 10;
     private static final int INITIAL_HERO_EXPERIENCE = 0;
@@ -157,5 +161,25 @@ public class Hero {
         return weapons.contains(weapon);
     }
 
+    @Override
+    // Code snippet from: WorkRoomApp
+    // EFFECTS: converts hero to JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("weapons",weaponsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns weapons with this hero as a JSON array
+    private JSONArray weaponsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Weapon w : weapons) {
+            jsonArray.put(w.toJson());
+        }
+
+        return jsonArray;
+    }
 
 }
