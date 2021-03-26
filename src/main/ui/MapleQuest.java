@@ -23,15 +23,25 @@ public class MapleQuest {
     private static final int MAX_WEAPON_TIER = 5;
     private static final String JSON_STORE = "./data/hero.json";
 
-    private Hero hero;
-    private List<Monster> monsters;
+    protected Hero hero;
+    protected List<Monster> monsters;
     private Scanner input;
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    protected JsonWriter jsonWriter;
+    protected JsonReader jsonReader;
+
+    // getters
+    public Hero getHero() {
+        return hero;
+    }
+
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
 
     // EFFECTS: runs MapleQuest application
     public MapleQuest() {
-        runMapleQuest();
+        init();
+//        runMapleQuest();
     }
 
     // MODIFIES: this
@@ -41,7 +51,7 @@ public class MapleQuest {
         boolean keepGoing = true;
         String command;
 
-        init();
+//        init();
 
         while (keepGoing) {
             displayMenu();
@@ -92,11 +102,12 @@ public class MapleQuest {
         input = new Scanner(System.in);
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-        System.out.println("Greetings traveller, welcome to the world of Aurora!");
-        System.out.println("By what name do you go by?");
-        String name = input.next();
-        hero = new Hero(name);
-        System.out.println("Ah! Well nice to meet you " + name + ", please follow me into town.");
+//        System.out.println("Greetings traveller, welcome to the world of Aurora!");
+//        System.out.println("By what name do you go by?");
+//        String name = input.next();
+//        hero = new Hero(name);
+        hero = new Hero("");
+//        System.out.println("Ah! Well nice to meet you " + name + ", please follow me into town.");
     }
 
     // EFFECTS: displays menu of options to user
