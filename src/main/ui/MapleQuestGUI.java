@@ -1,10 +1,21 @@
 package ui;
 
+import com.sun.beans.decoder.DocumentHandler;
+
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 
 public class MapleQuestGUI extends JFrame {
+    private static final int HEAL_COST = 50;
+    private static final int FORGE_COST = 50;
+    private static final int UPGRADE_COST = 50;
+    private static final int REST_HEAL_AMOUNT = 5;
+    private static final int WOUNDED_HERO_HEALTH = 10;
+    private static final int MAX_WEAPON_TIER = 5;
+    private static final int MAX_INVENTORY_SIZE = 3;
 
     private MapleQuest game;
 
@@ -30,15 +41,15 @@ public class MapleQuestGUI extends JFrame {
     private JButton choice3;
     private JButton choice4;
     private JTextArea mainTextArea;
+    private JTextArea subTextArea;
     private JTextField userTextEntry;
     private String position;
     private String userTextInput;
     private static String heroName;
+    private boolean keepRunning;
 
     private TitleScreenHandler tsHandler = new TitleScreenHandler();
-//    private UserHeroTextHandler userHeroHandler = new UserHeroTextHandler();
     private UserTextHandler userHandler = new UserTextHandler();
-//    private UserSelectHandler userSelectHandler = new UserSelectHandler();
     private ChoiceHandler choiceHandler = new ChoiceHandler();
 
     public static void main(String[] args) {
@@ -89,34 +100,49 @@ public class MapleQuestGUI extends JFrame {
 
         mainTextPanel = new JPanel();
         mainTextPanel.setBounds(100, 100, 800, 400);
-        mainTextPanel.setBackground(Color.ORANGE);
+        mainTextPanel.setBackground(Color.WHITE);
+        mainTextPanel.setLayout(new BoxLayout(mainTextPanel, BoxLayout.PAGE_AXIS));
 
         mainTextArea = new JTextArea("Main Text Area"); // setting up area of text
-        mainTextArea.setBounds(100, 100, 800, 400);
-        mainTextArea.setBackground(Color.RED);
+        mainTextArea.setPreferredSize(new Dimension(800, 300));
+        mainTextArea.setBackground(Color.ORANGE);
         mainTextArea.setForeground(Color.BLACK);
         mainTextArea.setFont(normalFont);
         mainTextArea.setLineWrap(true); // lets text to be wrapped, doesn't run off screen
         mainTextArea.setEditable(false); // unable to edit the text here
         mainTextPanel.add(mainTextArea);
 
+        mainTextPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+
+        subTextArea = new JTextArea("NPC Dialogue Here!"); // setting up area of text
+        subTextArea.setPreferredSize(new Dimension(800,75));
+        subTextArea.setBackground(Color.ORANGE);
+        subTextArea.setForeground(Color.BLACK);
+        subTextArea.setFont(normalFont);
+        subTextArea.setLineWrap(true); // lets text to be wrapped, doesn't run off screen
+        subTextArea.setEditable(false); // unable to edit the text here
+        mainTextPanel.add(subTextArea);
+
         userTextPanel = new JPanel();
-        userTextPanel.setBounds(100, 500, 800, 50);
-        userTextPanel.setBackground(Color.GRAY);
+        userTextPanel.setBounds(100, 525, 800, 50);
+        userTextPanel.setBackground(Color.WHITE);
 
         userTextEntry = new JTextField("Please enter text input here and press enter!");
-        userTextEntry.setBounds(100, 500, 800, 50);
-        userTextEntry.setBackground(Color.BLUE);
-        userTextEntry.setForeground(Color.BLACK);
+        userTextEntry.setBounds(100, 525, 800, 50);
+        userTextEntry.setBackground(Color.ORANGE);
+        userTextEntry.setForeground(Color.WHITE);
         userTextEntry.setFont(normalFont);
         userTextEntry.addActionListener(userHandler);
         userTextEntry.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (userTextEntry.getText().equals("Please enter text input here and press enter!")) {
+//                if (userTextEntry.getText().equals("Please enter text input here and press enter!")) {
                     userTextEntry.setText("");
-                    repaint();
-                    revalidate();
-                }
+//                }
+            }
+
+            public void mouseExited(MouseEvent e) {
+                userTextEntry.setText("Please enter text input here and press enter!");
             }
         });
         userTextPanel.add(userTextEntry);
@@ -198,15 +224,15 @@ public class MapleQuestGUI extends JFrame {
         playerPanel.add(goldLabelNumber);
 
         con.add(mainTextPanel);
-        con.add(userTextEntry);
+        con.add(userTextPanel);
         con.add(choiceButtonPanel);
         con.add(playerPanel);
 
-        playerPanelSetUp();
+        updatePlayerPanel();
         townGate();
     }
 
-    public void playerPanelSetUp() {
+    public void updatePlayerPanel() {
         String heroName = game.getHero().getName();
         int playerHP = game.getHero().getHealth();
         int goldAmount = game.getHero().getGold();
@@ -220,11 +246,6 @@ public class MapleQuestGUI extends JFrame {
         position = "townGate";
         mainTextArea.setText("Greetings traveller, welcome to Henesys!\nBy what name do you go by?");
 
-        heroName = userTextInput;
-        game.hero.setName(heroName);
-        heroLabelName.setText(heroName);
-        heroLabelName.setEnabled(false);
-
         choice1.setText("Advance to next screen.");
         choice2.setText("N/A");
         choice3.setText("N/A");
@@ -235,20 +256,86 @@ public class MapleQuestGUI extends JFrame {
         userTextEntry.setActionCommand("default");
         position = "townSquare";
         mainTextArea.setText("You're currently in Henesys, home of adventurers!\n"
-                + "Please select from the following options:\n"
-                + "n -> Visit the Town Nurse\n"
-                + "w -> Visit the Weaponsmith\n"
-                + "e -> Explore The Woods\n"
-                + "h -> Hero Status");
+                + "Please select from the following options:\n");
 //                + "\ti -> Weapon Inventory"
 //                + "\ts -> Save Hero's Weapons"
 //                + "\tl -> Load Hero's Weapons"
 //                + "\tq -> Quit MapleQuest");
+        subTextArea.setText("NPC Dialogue Here!");
 
         choice1.setText("Visit the Town Nurse");
         choice2.setText("Visit the Weaponsmith");
         choice3.setText("Explore The Woods");
         choice4.setText("Hero Status");
+    }
+
+    // EFFECTS: generates Town Nurse initial dialogue, processes user input while visiting
+    private void visitTownNurse() {
+        position = "townNurse";
+        mainTextArea.setText("You're currently at the Town Nurse.");
+        subTextArea.setText("Nurse: Why hello, you must be another adventurer, how may I help you today?");
+
+        choice1.setText("Heal My Wounds (" + HEAL_COST + ")");
+        choice2.setText("N/A");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
+    }
+
+    // MODIFIES: hero
+    // EFFECTS: generates dialogue if user selected heal option, processes subsequent command
+    private void visitTownNurseHealDialogue() {
+        position = "townNurseHeal";
+
+        if (game.getHero().getHealth() >= game.getHero().heroMaxHealth()) {
+            subTextArea.setText("Nurse: You're completely healthy already!\n" + "Come back when you're hurt.");
+        } else if (game.getHero().getGold() < HEAL_COST) {
+            subTextArea.setText("Nurse: You don't have enough gold! Try again later.");
+        } else {
+            game.getHero().heroGoldCostAmount(HEAL_COST);
+            game.getHero().setHealth(game.getHero().heroMaxHealth());
+            subTextArea.setText("You are now completely healed! Thanks for coming!");
+            updatePlayerPanel();
+        }
+
+        choice1.setText("N/A");
+        choice2.setText("N/A");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
+    }
+
+    // EFFECTS: generates Weaponsmith initial dialogue, processes user input while visiting
+    private void visitWeaponSmith() {
+        position = "townWeaponSmith";
+        mainTextArea.setText("You're currently at the Weaponsmith.");
+        subTextArea.setText("Weaponsmith: Hmph, how may I help you today traveller?");
+
+        choice1.setText("Forge New Weapon (" + FORGE_COST + " Gold)");
+        choice2.setText("Upgrade Weapon (" + UPGRADE_COST + " Gold)");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
+    }
+
+    // MODIFIES: hero
+    // EFFECTS: generates Weaponsmith forge weapon agreed dialogue, processes user input, adds weapon to hero
+    public void visitWeaponSmithForgeWeaponAgreed() {
+        position = "townWeaponSmithForge";
+        if (game.getHero().getGold() < FORGE_COST) {
+            subTextArea.setText("Weaponsmith: You don't have enough gold, stop wasting my time adventurer.");
+        } else if (game.getHero().getWeapons().size() >= MAX_INVENTORY_SIZE) {
+            subTextArea.setText("Weaponsmith: Hey, you're carrying too much, get rid of a weapon first.");
+        } else {
+            game.getHero().heroGoldCostAmount(FORGE_COST);
+            userTextEntry.setActionCommand("weapon");
+            subTextArea.setText("Weaponsmith: Very well, please give a name to your new weapon.");
+//            mainTextArea.setText("Current Weapon Name: " + userTextEntry.getText());
+//            game.getHero().addWeapon(userTextInput);
+            updatePlayerPanel();
+        }
+
+        choice1.setText("Create Weapon");
+        choice2.setText("N/A");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
     }
 
     private class TitleScreenHandler implements ActionListener {
@@ -265,14 +352,17 @@ public class MapleQuestGUI extends JFrame {
 
             switch (textChoice) {
                 case "hero":
-                    userTextInput = userTextEntry.getText();
-                    heroName = userTextInput;
+                    heroName = userTextEntry.getText();
                     game.hero.setName(heroName);
                     heroLabelName.setText(heroName);
                     userTextEntry.setText("Please enter text input here and press enter!");
                 case "default":
-                    userTextInput = userTextEntry.getText();
+                    userTextEntry.getText();
                     userTextEntry.setText("Please enter text input here and press enter!");
+                    break;
+                case "weapon":
+                    mainTextArea.setText("Current Weapon Name: " + userTextEntry.getText());
+                    break;
             }
         }
     }
@@ -284,15 +374,62 @@ public class MapleQuestGUI extends JFrame {
 
             switch (position) {
                 case "townGate":
+                    if ("c1".equals(yourChoice)) {
+                        townSquare();
+                    }
+                    break;
+                case "townSquare":
                     switch (yourChoice) {
                         case "c1":
-                            townSquare();
+                            visitTownNurse();
                             break;
                         case "c2":
+                            visitWeaponSmith();
+                            break;
                         case "c3":
+//                            exploreTheWoods();
+                            break;
                         case "c4":
                             break;
                     }
+                    break;
+                case "townNurse":
+                    if ("c1".equals(yourChoice)) {
+                        visitTownNurseHealDialogue();
+                    }
+                    break;
+                case "townNurseHeal":
+                case "townWeaponSmithForge":
+                    if ("c4".equals(yourChoice)) {
+                        townSquare();
+                    }
+                    break;
+                case "townWeaponSmith":
+                    switch (yourChoice) {
+                        case "c1":
+                            visitWeaponSmithForgeWeaponAgreed();
+                            break;
+                        case "c2":
+//                          visitWeaponSmithUpgradeWeaponAgreed();
+                            break;
+                        case "c3":
+//                          visitWeaponSmithRemoveWeaponAgreed();
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
+                case "townWeaponSmithForged":
+                    switch (yourChoice) {
+                        case "c1":
+                            visitWeaponSmithForgeWeaponAgreed();
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
             }
         }
     }
