@@ -1,6 +1,7 @@
 package ui;
 
 import com.sun.beans.decoder.DocumentHandler;
+import model.Weapon;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -20,6 +21,14 @@ public class MapleQuestGUI extends JFrame {
     private MapleQuest game;
 
     private Container con;
+    private Container saveGameCon;
+    private Container loadGameCon;
+    private JFrame saveGameFrame;
+    private JFrame loadGameFrame;
+    private JPanel saveGamePanel;
+    private JPanel loadGamePanel;
+    private JButton yesButton;
+    private JButton noButton;
     private JPanel titleNamePanel;
     private JPanel startButtonPanel;
     private JPanel mainTextPanel;
@@ -275,7 +284,7 @@ public class MapleQuestGUI extends JFrame {
         mainTextArea.setText("You're currently at the Town Nurse.");
         subTextArea.setText("Nurse: Why hello, you must be another adventurer, how may I help you today?");
 
-        choice1.setText("Heal My Wounds (" + HEAL_COST + ")");
+        choice1.setText("Heal My Wounds (" + HEAL_COST + " Gold)");
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("Leave");
@@ -311,31 +320,192 @@ public class MapleQuestGUI extends JFrame {
 
         choice1.setText("Forge New Weapon (" + FORGE_COST + " Gold)");
         choice2.setText("Upgrade Weapon (" + UPGRADE_COST + " Gold)");
-        choice3.setText("N/A");
+        choice3.setText("Remove Weapon");
         choice4.setText("Leave");
     }
 
     // MODIFIES: hero
-    // EFFECTS: generates Weaponsmith forge weapon agreed dialogue, processes user input, adds weapon to hero
+    // EFFECTS: generates Weaponsmith forge weapon agreed dialogue, processes user input
     public void visitWeaponSmithForgeWeaponAgreed() {
+        userTextEntry.setActionCommand("default");
         position = "townWeaponSmithForge";
         if (game.getHero().getGold() < FORGE_COST) {
-            subTextArea.setText("Weaponsmith: You don't have enough gold, stop wasting my time adventurer.");
+            subTextArea.setText("Weaponsmith: You don't have enough gold,\nstop wasting my time adventurer.");
         } else if (game.getHero().getWeapons().size() >= MAX_INVENTORY_SIZE) {
-            subTextArea.setText("Weaponsmith: Hey, you're carrying too much, get rid of a weapon first.");
+            subTextArea.setText("Weaponsmith: Hey, you're carrying too much,\nget rid of a weapon first.");
         } else {
             game.getHero().heroGoldCostAmount(FORGE_COST);
             userTextEntry.setActionCommand("weapon");
-            subTextArea.setText("Weaponsmith: Very well, please give a name to your new weapon.");
-//            mainTextArea.setText("Current Weapon Name: " + userTextEntry.getText());
-//            game.getHero().addWeapon(userTextInput);
+            subTextArea.setText("Weaponsmith: Very well, please give a name\nto your new weapon.");
             updatePlayerPanel();
         }
 
-        choice1.setText("Create Weapon");
+        choice1.setText("Create Weapon"); //TODO: Pop-up screen (image w/ sound) weapon created
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("Leave");
+    }
+
+    public void visitWeaponSmithForgeWeaponComplete() {
+        position = "townWeaponSmithForgeComplete";
+        game.getHero().addWeapon(userTextInput);
+        userTextEntry.setActionCommand("default");
+        displayWeapons();
+        subTextArea.setText("Weaponsmith: Here's your new weapon.");
+
+        choice1.setText("Forge Another Weapon (" + FORGE_COST + " Gold)");
+        choice2.setText("N/A");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
+    }
+
+    // EFFECTS: generates Weaponsmith dialogue if upgrade agreed, processes user input
+    public void visitWeaponSmithUpgradeWeaponAgreed() {
+        position = "townWeaponSmithUpgrade";
+        if (game.getHero().getGold() < UPGRADE_COST) {
+            subTextArea.setText("Weaponsmith: You don't have enough gold, stop\nwasting my time adventurer.");
+        } else if (game.getHero().getWeapons().size() <= 0) {
+            subTextArea.setText("Weaponsmith: You don't have a weapon, come back\nwhen you do!");
+        } else {
+            subTextArea.setText("Weaponsmith: Alright, which weapon do you\nwant me to upgrade?");
+            displayWeapons();
+        }
+
+        choice1.setText("Slot 1");
+        choice2.setText("Slot 2");
+        choice3.setText("Slot 3");
+        choice4.setText("Leave");
+    }
+
+    // MODIFIES: hero
+    // EFFECTS: processes which weapon in specified slot to upgrade, brings back to Weaponsmith dialogue after
+    public void visitWeaponSmithUpgradeWeaponComplete(int select) {
+        position = "townWeaponSmithUpgradeComplete";
+        try {
+            if (game.getHero().weaponAtSlotNumber(select).weaponMaxTier(MAX_WEAPON_TIER)) {
+                mainTextArea.setText("Please return back to town.");
+                subTextArea.setText("Weaponsmith: This weapon is fully upgraded already.");
+            } else {
+                mainTextArea.setText("Please return back to town.");
+                subTextArea.setText("Alright, I've upgraded "
+                        + game.getHero().getWeapons().get(select - 1).getWeaponName() + ".");
+                game.getHero().getWeapons().get(select - 1).upgradeWeapon();
+                game.getHero().heroGoldCostAmount(UPGRADE_COST);
+                updatePlayerPanel();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            mainTextArea.setText("There's no weapon in that slot.\n"
+                    + "Please try again with another weapon");
+            subTextArea.setText("");
+        }
+
+        choice1.setText("Try Another Weapon");
+        choice2.setText("N/A");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
+    }
+
+    public void visitWeaponSmithRemoveWeaponAgreed() {
+        position = "townWeaponSmithRemove";
+        if (game.getHero().getWeapons().size() <= 1) {
+            mainTextArea.setText("Please return back to town.");
+            subTextArea.setText("Weaponsmith: You only have one weapon, hang on to it.");
+        } else {
+            subTextArea.setText("Weaponsmith: Alright, which weapon do you\nwant me to remove?");
+            displayWeapons();
+        }
+
+        choice1.setText("Slot 1");
+        choice2.setText("Slot 2");
+        choice3.setText("Slot 3");
+        choice4.setText("Leave");
+    }
+
+    // MODIFIES: hero
+    // EFFECTS: removes weapon specified in slot selected, brings back to Weaponsmith dialogue after
+    public void visitWeaponSmithRemoveWeaponComplete(int select) {
+        position = "townWeaponSmithRemoveComplete";
+        try {
+            game.getHero().removeWeapon(select);
+            displayWeapons();
+            subTextArea.setText("Weaponsmith: Alright, I've removed the weapon.");
+        } catch (IndexOutOfBoundsException e) {
+            mainTextArea.setText("There's no weapon in that slot.\n"
+                    + "Please try again with another weapon");
+            subTextArea.setText("");
+        }
+
+        choice1.setText("Remove Another Weapon");
+        choice2.setText("N/A");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
+    }
+
+    public void displayHeroStatus() {
+        position = "displayHeroStatus";
+        displayWeapons();
+        displayHeroLevelStats();
+
+        choice1.setText("Save Weapons");
+        choice2.setText("Load Weapons");
+        choice3.setText("N/A");
+        choice4.setText("Leave");
+    }
+
+    public void displayWeapons() {
+        int slotNumber = 0;
+        mainTextArea.setText("Weapons In Inventory:\n");
+        for (Weapon weapon : game.getHero().getWeapons()) {
+            mainTextArea.append("Slot " + (slotNumber + 1) + ") Name: " + weapon.getWeaponName()
+                    + " Damage: " + weapon.getWeaponDamage() + " Tier: " + weapon.getWeaponTier() + "\n");
+            slotNumber++;
+        }
+    }
+
+    public void displayHeroLevelStats() {
+        mainTextArea.append("Level: " + game.getHero().getLevel() + "\nExperience: " + game.getHero().getExperience());
+    }
+
+    public void openSaveGamePrompt() {
+
+        saveGameFrame = new JFrame();
+        saveGameFrame.setSize(500, 500);
+        saveGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // adds fxn to window to close (i.e. X close)
+        saveGameFrame.getContentPane().setBackground(Color.WHITE); // set background colour of window
+        setLayout(null); // allows for customizable layout
+        saveGameCon = saveGameFrame.getContentPane();
+
+        saveGamePanel = new JPanel();
+        saveGamePanel.setBackground(Color.BLUE);
+        saveGamePanel.setBounds(0, 0, 300, 200);
+        JTextArea saveGamePanelText = new JTextArea();
+        saveGamePanelText.setText("Do you want to overwrite any existing save game?");
+        saveGamePanelText.setPreferredSize(new Dimension(300, 150));
+        saveGamePanelText.setLineWrap(true);
+        saveGamePanelText.setEditable(false);
+        saveGamePanelText.setBackground(Color.RED);
+        saveGamePanelText.setForeground(Color.BLACK);
+        saveGamePanelText.setFont(normalFont);
+        saveGamePanel.add(saveGamePanelText);
+
+        JPanel saveGameButtonPanel = new JPanel();
+        saveGameButtonPanel.setBounds(0, 250, 50, 50);
+        saveGameButtonPanel.setBackground(Color.ORANGE);
+        yesButton = new JButton("Yes");
+        noButton = new JButton("No ");
+        saveGameButtonPanel.add(yesButton);
+        saveGameButtonPanel.add(noButton);
+
+//        yesButton.setBackground(Color.BLUE);
+//        yesButton.setForeground(Color.ORANGE);
+//        yesButton.setFont(normalFont);
+//        yesButton.setFocusPainted(false);
+//        yesButton.addActionListener(choiceHandler);
+//        yesButton.setActionCommand("c1");
+
+        saveGameCon.add(saveGamePanel);
+        saveGameCon.add(saveGameButtonPanel);
+        saveGameFrame.setVisible(true);
     }
 
     private class TitleScreenHandler implements ActionListener {
@@ -361,11 +531,14 @@ public class MapleQuestGUI extends JFrame {
                     userTextEntry.setText("Please enter text input here and press enter!");
                     break;
                 case "weapon":
+                    userTextInput = userTextEntry.getText();
                     mainTextArea.setText("Current Weapon Name: " + userTextEntry.getText());
+                    userTextEntry.setText("Please enter text input here and press enter!");
                     break;
             }
         }
     }
+
 
     private class ChoiceHandler implements ActionListener {
 
@@ -390,16 +563,21 @@ public class MapleQuestGUI extends JFrame {
 //                            exploreTheWoods();
                             break;
                         case "c4":
+                            displayHeroStatus();
                             break;
                     }
                     break;
                 case "townNurse":
-                    if ("c1".equals(yourChoice)) {
-                        visitTownNurseHealDialogue();
+                    switch (yourChoice) {
+                        case "c1":
+                            visitTownNurseHealDialogue();
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
                     }
                     break;
                 case "townNurseHeal":
-                case "townWeaponSmithForge":
                     if ("c4".equals(yourChoice)) {
                         townSquare();
                     }
@@ -410,20 +588,95 @@ public class MapleQuestGUI extends JFrame {
                             visitWeaponSmithForgeWeaponAgreed();
                             break;
                         case "c2":
-//                          visitWeaponSmithUpgradeWeaponAgreed();
+                            visitWeaponSmithUpgradeWeaponAgreed();
                             break;
                         case "c3":
-//                          visitWeaponSmithRemoveWeaponAgreed();
+                          visitWeaponSmithRemoveWeaponAgreed();
                             break;
                         case "c4":
                             townSquare();
                             break;
                     }
                     break;
-                case "townWeaponSmithForged":
+                case "townWeaponSmithForge":
+                    switch (yourChoice) {
+                        case "c1":
+                            visitWeaponSmithForgeWeaponComplete();
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
+                case "townWeaponSmithForgeComplete":
                     switch (yourChoice) {
                         case "c1":
                             visitWeaponSmithForgeWeaponAgreed();
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
+                case "townWeaponSmithUpgrade":
+                    switch (yourChoice) {
+                        case "c1":
+                            visitWeaponSmithUpgradeWeaponComplete(1);
+                            break;
+                        case "c2":
+                            visitWeaponSmithUpgradeWeaponComplete(2);
+                            break;
+                        case "c3":
+                            visitWeaponSmithUpgradeWeaponComplete(3);
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
+                case "townWeaponSmithUpgradeComplete":
+                    switch (yourChoice) {
+                        case "c1":
+                            visitWeaponSmithUpgradeWeaponAgreed();
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
+                case "townWeaponSmithRemove":
+                    switch (yourChoice) {
+                        case "c1":
+                            visitWeaponSmithRemoveWeaponComplete(1);
+                            break;
+                        case "c2":
+                            visitWeaponSmithRemoveWeaponComplete(2);
+                            break;
+                        case "c3":
+                            visitWeaponSmithRemoveWeaponComplete(3);
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
+                case "townWeaponSmithRemoveComplete":
+                    switch (yourChoice) {
+                        case "c1":
+                            visitWeaponSmithRemoveWeaponAgreed();
+                            break;
+                        case "c4":
+                            townSquare();
+                            break;
+                    }
+                    break;
+                case "displayHeroStatus":
+                    switch (yourChoice) {
+                        case "c1":
+                            openSaveGamePrompt();
+                            break;
+                        case "c2":
+//                            openLoadGamePrompt();
                             break;
                         case "c4":
                             townSquare();

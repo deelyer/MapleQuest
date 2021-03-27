@@ -13,7 +13,7 @@ public class Hero implements Writable {
     private static final int INITIAL_HERO_HEALTH = 10;
     private static final int INITIAL_HERO_EXPERIENCE = 0;
     private static final int INITIAL_HERO_LEVEL = 1;
-    private static final int INITIAL_HERO_GOLD = 50;
+    private static final int INITIAL_HERO_GOLD = 500;
 //    private static final Weapon INITIAL_HERO_WEAPON = new Weapon("Sword");
     private static final int INITIAL_LEVEL_UP_EXP_REQUIRED = 1000;
 
