@@ -41,7 +41,7 @@ public class MapleQuest {
     // EFFECTS: runs MapleQuest application
     public MapleQuest() {
         init();
-//        runMapleQuest();
+        runMapleQuest();
     }
 
     // MODIFIES: this
@@ -51,7 +51,7 @@ public class MapleQuest {
         boolean keepGoing = true;
         String command;
 
-//        init();
+        init();
 
         while (keepGoing) {
             displayMenu();
@@ -102,12 +102,12 @@ public class MapleQuest {
         input = new Scanner(System.in);
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-//        System.out.println("Greetings traveller, welcome to the world of Aurora!");
-//        System.out.println("By what name do you go by?");
-//        String name = input.next();
-//        hero = new Hero(name);
+        System.out.println("Greetings traveller, welcome to the world of Aurora!");
+        System.out.println("By what name do you go by?");
+        String name = input.next();
+        hero = new Hero(name);
         hero = new Hero("");
-//        System.out.println("Ah! Well nice to meet you " + name + ", please follow me into town.");
+        System.out.println("Ah! Well nice to meet you " + name + ", please follow me into town.");
     }
 
     // EFFECTS: displays menu of options to user
@@ -503,7 +503,7 @@ public class MapleQuest {
 
     // Code snippet from: WorkRoomApp
     // EFFECTS: saves the hero to file
-    private void saveHeroToFile() {
+    public void saveHeroToFile() {
         try {
             jsonWriter.open();
             jsonWriter.write(hero);
@@ -516,7 +516,7 @@ public class MapleQuest {
 
     // Code snippet from: WorkRoomApp
     // EFFECTS: loads hero from file
-    private void loadHeroFromFile() {
+    public void loadHeroFromFile() {
         try {
             hero = jsonReader.read();
             System.out.println("Loaded " + hero.getName() + " from " + JSON_STORE);
