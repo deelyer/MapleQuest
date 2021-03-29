@@ -17,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class MapleQuestGUI extends JFrame {
     private static final int HEAL_COST = 50;
@@ -981,7 +980,7 @@ public class MapleQuestGUI extends JFrame {
                         break;
                     case "c2":
                         visitWeaponSmith();
-                        playSound("./hammer_anvil2.wav");
+                        playSound("./data/hammer_anvil.wav");
                         break;
                     case "c4":
                         displayHeroStatus();
@@ -1319,7 +1318,7 @@ public class MapleQuestGUI extends JFrame {
 //                            break;
 //                        case "c2":
 //                            visitWeaponSmith();
-//                            playSound("./hammer_anvil2.wav");
+//                            playSound("./data/hammer_anvil2.wav");
 //                            break;
 //                        case "c3":
 ////                            exploreTheWoods();
