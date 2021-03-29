@@ -981,7 +981,7 @@ public class MapleQuestGUI extends JFrame {
                         break;
                     case "c2":
                         visitWeaponSmith();
-                        playSound("./hammer_anvil2.wav");
+                        playSound("./data/hammer_anvil.wav");
                         break;
                     case "c4":
                         displayHeroStatus();
