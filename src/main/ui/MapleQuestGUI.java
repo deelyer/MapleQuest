@@ -28,7 +28,7 @@ public class MapleQuestGUI extends JFrame {
     private static final int MAX_WEAPON_TIER = 5;
     private static final int MAX_INVENTORY_SIZE = 3;
 
-//    private MapleQuest game;
+    //    private MapleQuest game;
     private Hero hero;
     private List<Monster> monsters;
     protected JsonWriter jsonWriter;
@@ -73,6 +73,8 @@ public class MapleQuestGUI extends JFrame {
     private String nextPosition2;
     private String nextPosition3;
     private String nextPosition4;
+    private String choicePath;
+    private String upperChoicePath;
     private static final String JSON_STORE = "./data/hero.json";
 
     private TitleScreenHandler tsHandler = new TitleScreenHandler();
@@ -95,6 +97,8 @@ public class MapleQuestGUI extends JFrame {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         hero = new Hero("");
+        upperChoicePath = "A";
+        choicePath = "choicePath1";
 
         setUpTitlePanel();
         setUpStartButtonPanel();
@@ -454,15 +458,17 @@ public class MapleQuestGUI extends JFrame {
         position = "townGate";
         mainTextArea.setText("Greetings traveller, welcome to Henesys!\nBy what name do you go by?");
 
+        upperChoicePath = "A";
+        choicePath = "choicePath1";
         choice1.setText("Advance to next screen.");
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("N/A");
 
-        nextPosition1 = "townSquare";
-        nextPosition2 = "";
-        nextPosition3 = "";
-        nextPosition4 = "";
+//        nextPosition1 = "townSquare";
+//        nextPosition2 = "";
+//        nextPosition3 = "";
+//        nextPosition4 = "";
     }
 
     // EFFECTS: the main game screen for all available options
@@ -477,15 +483,17 @@ public class MapleQuestGUI extends JFrame {
 //                + "\tq -> Quit MapleQuest");
         subTextArea.setText("NPC Dialogue Here!");
 
+        upperChoicePath = "A";
+        choicePath = "choicePath1";
         choice1.setText("Visit the Town Nurse");
         choice2.setText("Visit the Weaponsmith");
         choice3.setText("Explore The Woods");
         choice4.setText("Hero Status");
 
-        nextPosition1 = "townNurse";
-        nextPosition2 = "townWeaponSmith";
-        nextPosition3 = "";
-        nextPosition4 = "displayHeroStatus";
+//        nextPosition1 = "townNurse";
+//        nextPosition2 = "townWeaponSmith";
+//        nextPosition3 = "";
+//        nextPosition4 = "displayHeroStatus";
     }
 
     // EFFECTS: generates Town Nurse initial dialogue, processes user input while visiting
@@ -494,15 +502,17 @@ public class MapleQuestGUI extends JFrame {
         mainTextArea.setText("You're currently at the Town Nurse.");
         subTextArea.setText("Nurse: Why hello, you must be another adventurer, how may I help you today?");
 
+        upperChoicePath = "A";
+        choicePath = "choicePath2";
         choice1.setText("Heal My Wounds (" + HEAL_COST + " Gold)");
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("Leave");
 
-        nextPosition1 = "townNurseHeal";
-        nextPosition2 = "";
-        nextPosition3 = "";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "townNurseHeal";
+//        nextPosition2 = "";
+//        nextPosition3 = "";
+//        nextPosition4 = "townSquare";
     }
 
     // MODIFIES: hero
@@ -521,15 +531,17 @@ public class MapleQuestGUI extends JFrame {
             updatePlayerPanel();
         }
 
+        upperChoicePath = "A";
+        choicePath = "choicePath2";
         choice1.setText("N/A");
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("Leave");
 
-        nextPosition1 = "";
-        nextPosition2 = "";
-        nextPosition3 = "";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "";
+//        nextPosition2 = "";
+//        nextPosition3 = "";
+//        nextPosition4 = "townSquare";
     }
 
     // EFFECTS: generates Weaponsmith initial dialogue, processes user input while visiting
@@ -538,15 +550,17 @@ public class MapleQuestGUI extends JFrame {
         mainTextArea.setText("You're currently at the Weaponsmith.");
         subTextArea.setText("Weaponsmith: Hmph, how may I help you today traveller?");
 
+        upperChoicePath = "A";
+        choicePath = "choicePath3";
         choice1.setText("Forge New Weapon (" + FORGE_COST + " Gold)");
         choice2.setText("Upgrade Weapon (" + UPGRADE_COST + " Gold)");
         choice3.setText("Remove Weapon");
         choice4.setText("Leave");
 
-        nextPosition1 = "townWeaponSmithForge";
-        nextPosition2 = "townWeaponSmithUpgrade";
-        nextPosition3 = "townWeaponSmithRemove";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "townWeaponSmithForge";
+//        nextPosition2 = "townWeaponSmithUpgrade";
+//        nextPosition3 = "townWeaponSmithRemove";
+//        nextPosition4 = "townSquare";
     }
 
     // MODIFIES: hero
@@ -565,15 +579,17 @@ public class MapleQuestGUI extends JFrame {
             updatePlayerPanel();
         }
 
+        upperChoicePath = "A";
+        choicePath = "choicePath4";
         choice1.setText("Create Weapon");
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("Leave");
 
-        nextPosition1 = "townWeaponSmithForgeComplete";
-        nextPosition2 = "";
-        nextPosition3 = "";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "townWeaponSmithForgeComplete";
+//        nextPosition2 = "";
+//        nextPosition3 = "";
+//        nextPosition4 = "townSquare";
     }
 
     // MODIFIES: hero
@@ -585,15 +601,17 @@ public class MapleQuestGUI extends JFrame {
         displayWeapons();
         subTextArea.setText("Weaponsmith: Here's your new weapon.");
 
+        upperChoicePath = "A";
+        choicePath = "choicePath4";
         choice1.setText("Forge Another Weapon (" + FORGE_COST + " Gold)");
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("Leave");
 
-        nextPosition1 = "townWeaponSmithForge";
-        nextPosition2 = "";
-        nextPosition3 = "";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "townWeaponSmithForge";
+//        nextPosition2 = "";
+//        nextPosition3 = "";
+//        nextPosition4 = "townSquare";
     }
 
     // EFFECTS: generates Weaponsmith dialogue if upgrade agreed, processes user input
@@ -608,15 +626,17 @@ public class MapleQuestGUI extends JFrame {
             displayWeapons();
         }
 
+        upperChoicePath = "A";
+        choicePath = "choicePath5";
         choice1.setText("Slot 1");
         choice2.setText("Slot 2");
         choice3.setText("Slot 3");
         choice4.setText("Leave");
 
-        nextPosition1 = "townWeaponSmithUpgradeComplete";
-        nextPosition2 = "townWeaponSmithUpgradeComplete";
-        nextPosition3 = "townWeaponSmithUpgradeComplete";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "townWeaponSmithUpgradeComplete";
+//        nextPosition2 = "townWeaponSmithUpgradeComplete";
+//        nextPosition3 = "townWeaponSmithUpgradeComplete";
+//        nextPosition4 = "townSquare";
     }
 
     // MODIFIES: hero
@@ -639,6 +659,9 @@ public class MapleQuestGUI extends JFrame {
             mainTextArea.setText("There's no weapon in that slot.\n" + "Please try again with another weapon");
             subTextArea.setText("");
         }
+
+        upperChoicePath = "A";
+        choicePath = "choicePath6";
         choice1.setText("Try Another Weapon");
         choice2.setText("N/A");
         choice3.setText("N/A");
@@ -661,15 +684,17 @@ public class MapleQuestGUI extends JFrame {
             displayWeapons();
         }
 
+        upperChoicePath = "A";
+        choicePath = "choicePath7";
         choice1.setText("Slot 1");
         choice2.setText("Slot 2");
         choice3.setText("Slot 3");
         choice4.setText("Leave");
 
-        nextPosition1 = "townWeaponSmithRemoveComplete";
-        nextPosition2 = "townWeaponSmithRemoveComplete";
-        nextPosition3 = "townWeaponSmithRemoveComplete";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "townWeaponSmithRemoveComplete";
+//        nextPosition2 = "townWeaponSmithRemoveComplete";
+//        nextPosition3 = "townWeaponSmithRemoveComplete";
+//        nextPosition4 = "townSquare";
     }
 
     // MODIFIES: hero
@@ -686,15 +711,17 @@ public class MapleQuestGUI extends JFrame {
             subTextArea.setText("");
         }
 
+        upperChoicePath = "A";
+        choicePath = "choicePath6";
         choice1.setText("Remove Another Weapon");
         choice2.setText("N/A");
         choice3.setText("N/A");
         choice4.setText("Leave");
 
-        nextPosition1 = "townWeaponSmithRemove";
-        nextPosition2 = "";
-        nextPosition3 = "";
-        nextPosition4 = "townSquare";
+//        nextPosition1 = "townWeaponSmithRemove";
+//        nextPosition2 = "";
+//        nextPosition3 = "";
+//        nextPosition4 = "townSquare";
     }
 
     // EFFECTS: displays both list of weapons and hero level and experience in main text area
@@ -703,6 +730,8 @@ public class MapleQuestGUI extends JFrame {
         displayWeapons();
         displayHeroLevelStats();
 
+        upperChoicePath = "B";
+        choicePath = "choicePath8";
         choice1.setText("Save Weapons");
         choice2.setText("Load Weapons");
         choice3.setText("N/A");
@@ -735,6 +764,8 @@ public class MapleQuestGUI extends JFrame {
         position = "saveGame";
         mainTextArea.setText("Will you save your game?\nThis will overwrite any previous data.");
 
+        upperChoicePath = "B";
+        choicePath = "choicePath9";
         choice1.setText("Yes");
         choice2.setText("No");
         choice3.setText("N/A");
@@ -791,6 +822,8 @@ public class MapleQuestGUI extends JFrame {
         mainTextArea.setText("Game was successfully saved.");
         saveHeroToFile();
 
+        upperChoicePath = "B";
+        choicePath = "choicePath9";
         choice1.setText("N/A");
         choice2.setText("N/A");
         choice3.setText("N/A");
@@ -807,6 +840,8 @@ public class MapleQuestGUI extends JFrame {
         position = "loadGame";
         mainTextArea.setText("Will you load your previous game?\nThis will overwrite any current data.");
 
+        upperChoicePath = "B";
+        choicePath = "choicePath10";
         choice1.setText("Yes");
         choice2.setText("No");
         choice3.setText("N/A");
@@ -825,6 +860,8 @@ public class MapleQuestGUI extends JFrame {
         loadHeroFromFile();
         updatePlayerPanel();
 
+        upperChoicePath = "B";
+        choicePath = "choicePath10";
         choice1.setText("N/A");
         choice2.setText("N/A");
         choice3.setText("N/A");
@@ -929,11 +966,330 @@ public class MapleQuestGUI extends JFrame {
         }
     }
 
+    // EFFECTS: choice paths from townGate and townSquare
+    public void choicePath1(String yourChoice) {
+        switch (position) {
+            case "townGate":
+                if ("c1".equals(yourChoice)) {
+                    townSquare();
+                }
+                break;
+            case "townSquare":
+                switch (yourChoice) {
+                    case "c1":
+                        visitTownNurse();
+                        break;
+                    case "c2":
+                        visitWeaponSmith();
+                        playSound("./hammer_anvil2.wav");
+                        break;
+                    case "c4":
+                        displayHeroStatus();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path from townNurse
+    public void choicePath2(String yourChoice) {
+        switch (position) {
+            case "townNurse":
+                switch (yourChoice) {
+                    case "c1":
+                        visitTownNurseHealDialogue();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+            case "townNurseHeal":
+                if ("c4".equals(yourChoice)) {
+                    townSquare();
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path from Weaponsmith
+    public void choicePath3(String yourChoice) {
+        switch (position) {
+            case "townWeaponSmith":
+                switch (yourChoice) {
+                    case "c1":
+                        visitWeaponSmithForgeWeaponAgreed();
+                        break;
+                    case "c2":
+                        visitWeaponSmithUpgradeWeaponAgreed();
+                        break;
+                    case "c3":
+                        visitWeaponSmithRemoveWeaponAgreed();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path for forging weapons from Weaponsmith
+    public void choicePath4(String yourChoice) {
+        switch (position) {
+            case "townWeaponSmithForge":
+                switch (yourChoice) {
+                    case "c1":
+                        visitWeaponSmithForgeWeaponComplete();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+            case "townWeaponSmithForgeComplete":
+                switch (yourChoice) {
+                    case "c1":
+                        visitWeaponSmithForgeWeaponAgreed();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path for upgrading weapon at Weaponsmith
+    public void choicePath5(String yourChoice) {
+        switch (position) {
+            case "townWeaponSmithUpgrade":
+                switch (yourChoice) {
+                    case "c1":
+                        visitWeaponSmithUpgradeWeaponComplete(1);
+                        break;
+                    case "c2":
+                        visitWeaponSmithUpgradeWeaponComplete(2);
+                        break;
+                    case "c3":
+                        visitWeaponSmithUpgradeWeaponComplete(3);
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path for after completing upgrade or removal of weapon from Weaponsmith
+    public void choicePath6(String yourChoice) {
+        switch (position) {
+            case "townWeaponSmithUpgradeComplete":
+                switch (yourChoice) {
+                    case "c1":
+                        visitWeaponSmithUpgradeWeaponAgreed();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+            case "townWeaponSmithRemoveComplete":
+                switch (yourChoice) {
+                    case "c1":
+                        visitWeaponSmithRemoveWeaponAgreed();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path for selecting weapon to remove from Weaponsmith
+    public void choicePath7(String yourChoice) {
+        switch (position) {
+            case "townWeaponSmithRemove":
+                switch (yourChoice) {
+                    case "c1":
+                        visitWeaponSmithRemoveWeaponComplete(1);
+                        break;
+                    case "c2":
+                        visitWeaponSmithRemoveWeaponComplete(2);
+                        break;
+                    case "c3":
+                        visitWeaponSmithRemoveWeaponComplete(3);
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path for displaying hero status screen
+    public void choicePath8(String yourChoice) {
+        switch (position) {
+            case "displayHeroStatus":
+                switch (yourChoice) {
+                    case "c1":
+                        openSaveGamePrompt();
+                        break;
+                    case "c2":
+                        openLoadGamePrompt();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path for saving your game
+    public void choicePath9(String yourChoice) {
+        switch (position) {
+            case "saveGame":
+                switch (yourChoice) {
+                    case "c1":
+                        openSaveGamePromptComplete();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+            case "saveGameComplete":
+                switch (yourChoice) {
+                    case "c1":
+                        openSaveGamePromptComplete();
+                        break;
+                    case "c2":
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice path for loading your game
+    public void choicePath10(String yourChoice) {
+        switch (position) {
+            case "loadGame":
+                switch (yourChoice) {
+                    case "c1":
+                        openLoadGamePromptComplete();
+                        break;
+                    case "c2":
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+            case "loadGameComplete":
+                switch (yourChoice) {
+                    case "c1":
+                        openLoadGamePromptComplete();
+                        break;
+                    case "c4":
+                        townSquare();
+                        break;
+                }
+                break;
+        }
+    }
+
+    // EFFECTS: choice paths for majority of game elements, not including displaying hero information or save/load game
+    public void upperChoicePathA(String yourChoice) {
+        switch (choicePath) {
+            case "choicePath1":
+                choicePath1(yourChoice);
+                break;
+            case "choicePath2":
+                choicePath2(yourChoice);
+                break;
+            case "choicePath3":
+                choicePath3(yourChoice);
+                break;
+            case "choicePath4":
+                choicePath4(yourChoice);
+                break;
+            case "choicePath5":
+                choicePath5(yourChoice);
+                break;
+            case "choicePath6":
+                choicePath6(yourChoice);
+                break;
+            case "choicePath7":
+                choicePath7(yourChoice);
+                break;
+        }
+    }
+
+    // EFFECTS: choice paths for displaying hero status, saving or loading game
+    public void upperChoicePathB(String yourChoice) {
+        switch (choicePath) {
+            case "choicePath8":
+                choicePath8(yourChoice);
+                break;
+            case "choicePath9":
+                choicePath9(yourChoice);
+                break;
+            case "choicePath10":
+                choicePath10(yourChoice);
+                break;
+        }
+    }
+
     // EFFECTS: registers button choices for any given prompt
     private class ChoiceHandler implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
             String yourChoice = event.getActionCommand();
+            switch (upperChoicePath) {
+                case "A":
+                    upperChoicePathA(yourChoice);
+                    break;
+                case "B":
+                    upperChoicePathB(yourChoice);
+                    break;
+            }
+        }
+    }
+//            switch (choicePath) {
+//                case "choicePath1":
+//                    choicePath1(yourChoice);
+//                    break;
+//                case "choicePath2":
+//                    choicePath2(yourChoice);
+//                    break;
+//                case "choicePath3":
+//                    choicePath3(yourChoice);
+//                    break;
+//                case "choicePath4":
+//                    choicePath4(yourChoice);
+//                    break;
+//                case "choicePath5":
+//                    choicePath5(yourChoice);
+//                    break;
+//                case "choicePath6":
+//                    choicePath6(yourChoice);
+//                    break;
+//                case "choicePath7":
+//                    choicePath7(yourChoice);
+//                    break;
+//                case "choicePath8":
+//                    choicePath8(yourChoice);
+//                    break;
+//                case "choicePath9":
+//                    choicePath9(yourChoice);
+//                    break;
+//                case "choicePath10":
+//                    choicePath10(yourChoice);
+//                    break;
 
 //            switch (yourChoice) {
 //                case "c1":
@@ -950,187 +1306,186 @@ public class MapleQuestGUI extends JFrame {
 //                    break;
 //            }
 
-            switch (position) {
-                case "townGate":
-                    if ("c1".equals(yourChoice)) {
-                        townSquare();
-                    }
-                    break;
-                case "townSquare":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitTownNurse();
-                            break;
-                        case "c2":
-                            visitWeaponSmith();
-                            playSound("./hammer_anvil2.wav");
-                            break;
-                        case "c3":
-//                            exploreTheWoods();
-                            break;
-                        case "c4":
-                            displayHeroStatus();
-                            break;
-                    }
-                    break;
-                case "townNurse":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitTownNurseHealDialogue();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "townNurseHeal":
-                    if ("c4".equals(yourChoice)) {
-                        townSquare();
-                    }
-                    break;
-                case "townWeaponSmith":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitWeaponSmithForgeWeaponAgreed();
-                            break;
-                        case "c2":
-                            visitWeaponSmithUpgradeWeaponAgreed();
-                            break;
-                        case "c3":
-                            visitWeaponSmithRemoveWeaponAgreed();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "townWeaponSmithForge":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitWeaponSmithForgeWeaponComplete();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "townWeaponSmithForgeComplete":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitWeaponSmithForgeWeaponAgreed();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "townWeaponSmithUpgrade":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitWeaponSmithUpgradeWeaponComplete(1);
-                            break;
-                        case "c2":
-                            visitWeaponSmithUpgradeWeaponComplete(2);
-                            break;
-                        case "c3":
-                            visitWeaponSmithUpgradeWeaponComplete(3);
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "townWeaponSmithUpgradeComplete":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitWeaponSmithUpgradeWeaponAgreed();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "townWeaponSmithRemove":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitWeaponSmithRemoveWeaponComplete(1);
-                            break;
-                        case "c2":
-                            visitWeaponSmithRemoveWeaponComplete(2);
-                            break;
-                        case "c3":
-                            visitWeaponSmithRemoveWeaponComplete(3);
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "townWeaponSmithRemoveComplete":
-                    switch (yourChoice) {
-                        case "c1":
-                            visitWeaponSmithRemoveWeaponAgreed();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "displayHeroStatus":
-                    switch (yourChoice) {
-                        case "c1":
-                            openSaveGamePrompt();
-                            break;
-                        case "c2":
-                            openLoadGamePrompt();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "saveGame":
-                    switch (yourChoice) {
-                        case "c1":
-                            openSaveGamePromptComplete();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                case "saveGameComplete":
-                    switch (yourChoice) {
-                        case "c1":
-                            openSaveGamePromptComplete();
-                            break;
-                        case "c2":
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "loadGame":
-                    switch (yourChoice) {
-                        case "c1":
-                            openLoadGamePromptComplete();
-                            break;
-                        case "c2":
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-                case "loadGameComplete":
-                    switch (yourChoice) {
-                        case "c1":
-                            openLoadGamePromptComplete();
-                            break;
-                        case "c4":
-                            townSquare();
-                            break;
-                    }
-                    break;
-            }
-        }
-    }
+//            switch (position) {
+//                case "townGate":
+//                    if ("c1".equals(yourChoice)) {
+//                        townSquare();
+//                    }
+//                    break;
+//                case "townSquare":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitTownNurse();
+//                            break;
+//                        case "c2":
+//                            visitWeaponSmith();
+//                            playSound("./hammer_anvil2.wav");
+//                            break;
+//                        case "c3":
+////                            exploreTheWoods();
+//                            break;
+//                        case "c4":
+//                            displayHeroStatus();
+//                            break;
+//                    }
+//                    break;
+//                case "townNurse":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitTownNurseHealDialogue();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "townNurseHeal":
+//                    if ("c4".equals(yourChoice)) {
+//                        townSquare();
+//                    }
+//                    break;
+//                case "townWeaponSmith":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitWeaponSmithForgeWeaponAgreed();
+//                            break;
+//                        case "c2":
+//                            visitWeaponSmithUpgradeWeaponAgreed();
+//                            break;
+//                        case "c3":
+//                            visitWeaponSmithRemoveWeaponAgreed();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "townWeaponSmithForge":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitWeaponSmithForgeWeaponComplete();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "townWeaponSmithForgeComplete":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitWeaponSmithForgeWeaponAgreed();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "townWeaponSmithUpgrade":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitWeaponSmithUpgradeWeaponComplete(1);
+//                            break;
+//                        case "c2":
+//                            visitWeaponSmithUpgradeWeaponComplete(2);
+//                            break;
+//                        case "c3":
+//                            visitWeaponSmithUpgradeWeaponComplete(3);
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "townWeaponSmithUpgradeComplete":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitWeaponSmithUpgradeWeaponAgreed();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "townWeaponSmithRemove":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitWeaponSmithRemoveWeaponComplete(1);
+//                            break;
+//                        case "c2":
+//                            visitWeaponSmithRemoveWeaponComplete(2);
+//                            break;
+//                        case "c3":
+//                            visitWeaponSmithRemoveWeaponComplete(3);
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "townWeaponSmithRemoveComplete":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            visitWeaponSmithRemoveWeaponAgreed();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "displayHeroStatus":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            openSaveGamePrompt();
+//                            break;
+//                        case "c2":
+//                            openLoadGamePrompt();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "saveGame":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            openSaveGamePromptComplete();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                case "saveGameComplete":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            openSaveGamePromptComplete();
+//                            break;
+//                        case "c2":
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "loadGame":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            openLoadGamePromptComplete();
+//                            break;
+//                        case "c2":
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//                case "loadGameComplete":
+//                    switch (yourChoice) {
+//                        case "c1":
+//                            openLoadGamePromptComplete();
+//                            break;
+//                        case "c4":
+//                            townSquare();
+//                            break;
+//                    }
+//                    break;
+//            }
+//        }
 }

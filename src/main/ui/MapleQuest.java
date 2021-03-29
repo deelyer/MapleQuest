@@ -40,7 +40,6 @@ public class MapleQuest {
 
     // EFFECTS: runs MapleQuest application
     public MapleQuest() {
-        init();
         runMapleQuest();
     }
 

@@ -1,4 +1,8 @@
 {
     "name": "Timmy",
-    "weapons": []
+    "weapons": [{
+        "weapontier": 1,
+        "name": "Roger",
+        "weapondamage": 10
+    }]
 }
