@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// Plays MapleQuest Simple GUI Application
 public class MapleQuestGUI extends JFrame {
     private static final int HEAL_COST = 50;
     private static final int FORGE_COST = 50;
