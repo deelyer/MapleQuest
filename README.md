@@ -35,3 +35,15 @@ each of the subclasses."
 Classes: Monster, Vampire, Ogre
 
 Methods: performSpecialEffect()
+
+## Phase 4: Task 3
+If given more time, these would be the refactoring decisions:
+
+- Make Monster class an abstract class with default behaviour, allowing generation of future subtypes of monsters
+easily
+- Similarly, make Weapon class possibly an abstract class with more default behaviour, allows generation of future
+subtypes of weapons more easily
+- Refactor MapleQuest to eliminate redundant code such that MapleQuestGUI can easily utilize methods that already call
+methods from Hero, JSONReader, and JSONWriter classes
+- Beyond that, design appears appropriate with minimal coupling, but refactoring can definitely be more present to
+improve cohesion within classes such as MapleQuestGUI

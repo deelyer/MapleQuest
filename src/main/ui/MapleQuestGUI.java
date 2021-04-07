@@ -1,7 +1,7 @@
 package ui;
 
 import model.Hero;
-import model.Monster;
+//import model.Monster;
 import model.Weapon;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -15,7 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 //import java.util.List;
 
 // Plays MapleQuest Simple GUI Application
