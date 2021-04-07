@@ -1,8 +1,6 @@
 package ui;
 
-import model.Hero;
-import model.Monster;
-import model.Weapon;
+import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -10,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 // MapleQuest Simple RPG application
@@ -415,11 +414,23 @@ public class MapleQuest {
     // MODIFIES: monsters
     // EFFECTS: generates a single monster only encounter
     public Monster generateSingleMonsterEncounter(List<Monster> monsters) {
-        Monster monster = new Monster();
+        Monster monster = generateRandomMonster();
         monsters.add(monster);
         monster.scaleMonsterStatistics(hero.getLevel());
         System.out.println("You've encountered a " + monster.getName() + "!");
         return monster;
+    }
+
+    public Monster generateRandomMonster() {
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(10);
+        if (randomNumber <= 4) {
+            return new Monster();
+        } else if (randomNumber <= 7) {
+            return new Vampire();
+        } else {
+            return new Ogre();
+        }
     }
 
     // EFFECTS: processes the possible options once in a battle scenario
@@ -476,6 +487,7 @@ public class MapleQuest {
                 + ". Your HP: " + hero.getHealth());
         System.out.println("You swing at the monster and deal " + damageToMonster + " damage!"
                 + " Monster HP: " + monster.getHealth());
+        System.out.println(monster.performSpecialEffect());
     }
 
     // EFFECTS: during a battle encounter, have the option to escape

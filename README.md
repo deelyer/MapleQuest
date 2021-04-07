@@ -25,3 +25,13 @@ In MapleQuest, users can expect the following features:
 - As a user, I want to be able to select between different weapons from my inventory to attack with.
 - As a user, I want to be able to save the weapons I've gotten with my hero to file.
 - As a user, I want to be able to reload with the weapons from my previously created hero from file.
+
+## Phase 4: Task 2
+Option 2: "Include a type hierarchy in your code other than the one that uses the Saveable interface introduced in 
+Phase 2.  You must have more than one subclass and your subclasses must have distinct functionality.  They must 
+therefore override at least one method inherited from a super type and override it in different ways in 
+each of the subclasses."
+
+Classes: Monster, Vampire, Ogre
+
+Methods: performSpecialEffect()

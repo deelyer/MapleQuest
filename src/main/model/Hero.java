@@ -10,7 +10,7 @@ import java.util.List;
 // Represents a hero having a name, health points, experience, level, and weapons
 public class Hero implements Writable {
 
-    private static final int INITIAL_HERO_HEALTH = 10;
+    private static final int INITIAL_HERO_HEALTH = 20;
     private static final int INITIAL_HERO_EXPERIENCE = 0;
     private static final int INITIAL_HERO_LEVEL = 1;
     private static final int INITIAL_HERO_GOLD = 500;

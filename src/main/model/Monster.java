@@ -8,13 +8,14 @@ public class Monster {
     private static final int INITIAL_MONSTER_LEVEL = 1;
     private static final int INITIAL_MONSTER_GOLD = 100;
     private static final int INITIAL_MONSTER_DAMAGE = 2;
+    private static final int DROPPED_GOLD_AMOUNT = 5;
 
-    private String name;               // the monster's name
-    private int health;                // the monster's health
-    private int experience;            // the monster's experience points
-    private int level;                 // the monster's level
-    private int gold;                  // the monster's amount of gold carried
-    private int damage;                // the monster's amount of damage done
+    protected String name;               // the monster's name
+    protected int health;                // the monster's health
+    protected int experience;            // the monster's experience points
+    protected int level;                 // the monster's level
+    protected int gold;                  // the monster's amount of gold carried
+    protected int damage;                // the monster's amount of damage done
 
     // EFFECTS: constructs a new monster named "Goblin"
     public Monster() {
@@ -73,7 +74,7 @@ public class Monster {
             this.damage = INITIAL_MONSTER_DAMAGE;
         } else {
             this.level = heroLevel - 1;
-            this.health = INITIAL_MONSTER_HEALTH * this.level;
+            this.health = this.health * this.level;
             this.experience = this.experience * this.level;
             this.gold = this.gold * this.level;
             this.damage = this.damage * this.level;
@@ -83,6 +84,18 @@ public class Monster {
     // EFFECTS: determine if monster's health has surpassed or reached 0
     public boolean monsterDeath() {
         return this.health <= 0;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: performs special monster move, removes a small amount of gold
+    public String performSpecialEffect() {
+        if (this.gold >= DROPPED_GOLD_AMOUNT) {
+            this.gold -= DROPPED_GOLD_AMOUNT;
+            return "The goblin dropped a bit of gold after you hit it.";
+        } else {
+            this.gold = 0;
+            return "The golbin has no more gold to drop!";
+        }
     }
 }
 

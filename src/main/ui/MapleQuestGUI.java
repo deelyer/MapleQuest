@@ -16,21 +16,21 @@ import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 
 // Plays MapleQuest Simple GUI Application
 public class MapleQuestGUI extends JFrame {
     private static final int HEAL_COST = 50;
     private static final int FORGE_COST = 50;
     private static final int UPGRADE_COST = 50;
-    private static final int REST_HEAL_AMOUNT = 5;
-    private static final int WOUNDED_HERO_HEALTH = 10;
+//    private static final int REST_HEAL_AMOUNT = 5;
+//    private static final int WOUNDED_HERO_HEALTH = 10;
     private static final int MAX_WEAPON_TIER = 5;
     private static final int MAX_INVENTORY_SIZE = 3;
 
     //    private MapleQuest game;
     private Hero hero;
-    private List<Monster> monsters;
+//    private List<Monster> monsters;
     protected JsonWriter jsonWriter;
     protected JsonReader jsonReader;
 
@@ -56,8 +56,8 @@ public class MapleQuestGUI extends JFrame {
     private JLabel hpLabelNumber;
     private JLabel goldLabel;
     private JLabel goldLabelNumber;
-    private Font titleFont = new Font("Courier", Font.BOLD, 90);
-    private Font normalFont = new Font("Courier", Font.PLAIN, 30);
+    private final Font titleFont = new Font("Courier", Font.BOLD, 90);
+    private final Font normalFont = new Font("Courier", Font.PLAIN, 30);
     private JButton startButton;
     private JButton choice1;
     private JButton choice2;
@@ -93,7 +93,7 @@ public class MapleQuestGUI extends JFrame {
         getContentPane().setBackground(Color.WHITE); // set background colour of window
         setLayout(null); // allows for customizable layout
         con = getContentPane(); // window -> container -> panels,buttons,etc.
-        monsters = new ArrayList<>();
+//        monsters = new ArrayList<>();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         hero = new Hero("");
