@@ -1,8 +1,8 @@
 {
-    "name": "",
+    "name": "Timmy",
     "weapons": [{
         "weapontier": 1,
-        "name": "Exalicbur",
+        "name": "sword",
         "weapondamage": 10
     }]
 }
